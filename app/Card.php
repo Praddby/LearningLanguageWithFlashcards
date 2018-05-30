@@ -15,6 +15,11 @@ class Card extends Model
     return $this->belongsTo(CardGroup::class);
   }
 
+  public static function destroy($id)
+  {
+  	self::find($id)->delete();
+  }
+
   
 
 }

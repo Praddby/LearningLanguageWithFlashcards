@@ -6,6 +6,7 @@ use App\Card;
 use App\CardGroup;
 use Illuminate\Http\Request;
 use Validator;
+use Illuminate\Support\Facades\Input;
 
 class CardsController extends Controller
 {
@@ -44,15 +45,19 @@ class CardsController extends Controller
     }
 
     
-    
-    public function edit(Cards $cards)
+
+    public function edit()
     {
         //
     }
 
     
-    public function destroy(Cards $cards)
+    public function destroy(Card $card, Request $request)
     {
-        //
+        $world = $request->input('world');
+        
+        $card->destroy($world['id']);
+
+        return response( CardGroup::with('cards')->get() );
     }
 }

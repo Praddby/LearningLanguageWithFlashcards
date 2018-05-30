@@ -13904,6 +13904,9 @@ module.exports = Cancel;
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -13930,6 +13933,19 @@ module.exports = Cancel;
             var t = this;
             t.worlds = card.cards;
             t.slag = card.name_category;
+        },
+        editWorld: function editWorld(world) {},
+        deleteWorld: function deleteWorld(world) {
+            var t = this;
+            var idx = t.worlds.indexOf(world);
+            t.worlds.splice(idx, 1);
+            axios.post('/deleteWorld', {
+                world: world
+            }).then(function (_ref2) {
+                var data = _ref2.data;
+
+                t.cards = data;
+            });
         }
     }
 });
@@ -47346,7 +47362,25 @@ var render = function() {
                     _vm._v(" - "),
                     _c("em", [_vm._v(_vm._s(world.name_translation))]),
                     _vm._v(" "),
-                    _vm._m(0, true)
+                    _c("span", [
+                      _c("i", {
+                        staticClass: "icon ion-md-create mr-4 btn",
+                        on: {
+                          click: function($event) {
+                            _vm.editWorld(world)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("i", {
+                        staticClass: "icon ion-md-trash btn",
+                        on: {
+                          click: function($event) {
+                            _vm.deleteWorld(world)
+                          }
+                        }
+                      })
+                    ])
                   ]
                 )
               })
@@ -47357,17 +47391,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", [
-      _c("i", { staticClass: "icon ion-md-create mr-4 btn" }),
-      _c("i", { staticClass: "icon ion-md-trash btn" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 if (false) {

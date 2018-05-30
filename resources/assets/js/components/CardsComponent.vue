@@ -25,7 +25,10 @@
               <li class="list-group-item d-flex justify-content-between"
               v-for="(world, index) in worlds" :key="world.id">
                 <strong>{{ world.name_original }}</strong> - <em>{{ world.name_translation }}</em>
-                <span><i class="icon ion-md-create mr-4 btn"></i><i class="icon ion-md-trash btn"></i></span>
+                <span>
+                  <i class="icon ion-md-create mr-4 btn" @click="editWorld(world)"></i>
+                  <i class="icon ion-md-trash btn" @click="deleteWorld(world)"></i>
+                </span>
               </li>
             </ul>
           </div>
@@ -36,9 +39,10 @@
 </template>
 
 <script>
-    
+  
 
     export default {
+
         data(){
             return{
                 cards: {},
@@ -61,6 +65,19 @@
                 t.worlds = card.cards;
                 t.slag = card.name_category;
             },
+            editWorld(world){
+
+            },
+            deleteWorld(world){
+                const t = this;
+                let idx = t.worlds.indexOf(world);
+                t.worlds.splice(idx, 1);
+                axios.post('/deleteWorld', {
+                    world: world,
+                }).then(({data}) => {
+                    t.cards = data;                 
+                });
+            }
         }        
     };
 </script>
