@@ -13907,6 +13907,17 @@ module.exports = Cancel;
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -13914,7 +13925,10 @@ module.exports = Cancel;
         return {
             cards: {},
             worlds: [],
-            slag: ''
+            slag: '',
+            isEditing: false,
+            name_original: '',
+            name_translation: ''
         };
     },
     created: function created() {
@@ -13934,15 +13948,31 @@ module.exports = Cancel;
             t.worlds = card.cards;
             t.slag = card.name_category;
         },
-        editWorld: function editWorld(world) {},
+        showFormEditWorld: function showFormEditWorld() {
+            this.isEditing = true;
+        },
+        closeFormEditWorld: function closeFormEditWorld() {
+            this.isEditing = false;
+        },
+        setEdite: function setEdite(world) {
+            var t = this;
+            t.isEditing = false;
+            axios.post('/editWorld', {
+                world: world
+            }).then(function (_ref2) {
+                var data = _ref2.data;
+
+                console.log(data);
+            });
+        },
         deleteWorld: function deleteWorld(world) {
             var t = this;
             var idx = t.worlds.indexOf(world);
             t.worlds.splice(idx, 1);
             axios.post('/deleteWorld', {
                 world: world
-            }).then(function (_ref2) {
-                var data = _ref2.data;
+            }).then(function (_ref3) {
+                var data = _ref3.data;
 
                 t.cards = data;
             });
@@ -47358,29 +47388,183 @@ var render = function() {
                       "list-group-item d-flex justify-content-between"
                   },
                   [
-                    _c("strong", [_vm._v(_vm._s(world.name_original))]),
-                    _vm._v(" - "),
-                    _c("em", [_vm._v(_vm._s(world.name_translation))]),
+                    _c(
+                      "strong",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.isEditing,
+                            expression: "!isEditing"
+                          }
+                        ]
+                      },
+                      [_vm._v(_vm._s(world.name_original))]
+                    ),
                     _vm._v(" "),
-                    _c("span", [
-                      _c("i", {
-                        staticClass: "icon ion-md-create mr-4 btn",
-                        on: {
-                          click: function($event) {
-                            _vm.editWorld(world)
+                    _c(
+                      "span",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.isEditing,
+                            expression: "!isEditing"
                           }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("i", {
-                        staticClass: "icon ion-md-trash btn",
-                        on: {
-                          click: function($event) {
-                            _vm.deleteWorld(world)
+                        ]
+                      },
+                      [_vm._v("-")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "em",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.isEditing,
+                            expression: "!isEditing"
                           }
-                        }
-                      })
-                    ])
+                        ]
+                      },
+                      [_vm._v(_vm._s(world.name_translation))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.isEditing,
+                            expression: "!isEditing"
+                          }
+                        ]
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "icon ion-md-create mr-4 btn",
+                          on: { click: _vm.showFormEditWorld }
+                        }),
+                        _vm._v(" "),
+                        _c("i", {
+                          staticClass: "icon ion-md-trash btn",
+                          on: {
+                            click: function($event) {
+                              _vm.deleteWorld(world)
+                            }
+                          }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "form",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.isEditing,
+                            expression: "isEditing"
+                          }
+                        ],
+                        attrs: { method: "POST" }
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "input-group input-group-sm" },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: world.name_original,
+                                  expression: "world.name_original"
+                                }
+                              ],
+                              staticClass: "form-control mr-4",
+                              attrs: { type: "text" },
+                              domProps: { value: world.name_original },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    world,
+                                    "name_original",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v("\n                  -\n                  "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: world.name_translation,
+                                  expression: "world.name_translation"
+                                }
+                              ],
+                              staticClass: "form-control mx-4",
+                              attrs: { type: "text" },
+                              domProps: { value: world.name_translation },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    world,
+                                    "name_translation",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary mr-4",
+                                attrs: { type: "submit" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    _vm.setEdite(world)
+                                  }
+                                }
+                              },
+                              [_vm._v("Ок")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                attrs: { type: "submit" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.closeFormEditWorld($event)
+                                  }
+                                }
+                              },
+                              [_vm._v("Отмена")]
+                            )
+                          ]
+                        )
+                      ]
+                    )
                   ]
                 )
               })

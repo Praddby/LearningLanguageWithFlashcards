@@ -21,6 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/getCards', 'CardsController@show');
 Route::post('/deleteWorld', 'CardsController@destroy');
+Route::post('/editWorld', 'CardsController@edit');
 
 Route::post('/addcards', 'CardsController@store')->name('form-add-cards');
 

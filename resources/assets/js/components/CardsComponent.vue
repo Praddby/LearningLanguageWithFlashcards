@@ -24,11 +24,22 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-between"
               v-for="(world, index) in worlds" :key="world.id">
-                <strong>{{ world.name_original }}</strong> - <em>{{ world.name_translation }}</em>
-                <span>
-                  <i class="icon ion-md-create mr-4 btn" @click="editWorld(world)"></i>
+                <strong v-show="!isEditing">{{ world.name_original }}</strong> <span v-show="!isEditing">-</span> <em v-show="!isEditing">{{ world.name_translation }}</em>
+                <span v-show="!isEditing">
+                  <i class="icon ion-md-create mr-4 btn" @click="showFormEditWorld"></i>
                   <i class="icon ion-md-trash btn" @click="deleteWorld(world)"></i>
                 </span>
+
+                <form v-show="isEditing" method="POST">
+                  <div class="input-group input-group-sm">
+                    <input type="text" class="form-control mr-4" v-model="world.name_original" >
+                    -
+                    <input type="text" class="form-control mx-4" v-model="world.name_translation" >
+                    <button type="submit" class="btn btn-primary mr-4" @click.prevent="setEdite(world)">Ок</button>
+                    <button type="submit" class="btn btn-primary" @click.prevent="closeFormEditWorld">Отмена</button>
+                  </div>
+                </form>
+
               </li>
             </ul>
           </div>
@@ -48,6 +59,9 @@
                 cards: {},
                 worlds: [],
                 slag: '',
+                isEditing: false,
+                name_original: '',
+                name_translation: ''
             }
         },
         created() {
@@ -65,8 +79,20 @@
                 t.worlds = card.cards;
                 t.slag = card.name_category;
             },
-            editWorld(world){
-
+            showFormEditWorld(){
+              this.isEditing = true;
+            },
+            closeFormEditWorld(){
+              this.isEditing = false;
+            },
+            setEdite(world){
+              const t = this;
+              t.isEditing = false;
+              axios.post('/editWorld', {
+                world: world,
+              }).then(({data}) => {
+                console.log(data);
+              });
             },
             deleteWorld(world){
                 const t = this;

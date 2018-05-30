@@ -17,7 +17,12 @@ class Card extends Model
 
   public static function destroy($id)
   {
-  	self::find($id)->delete();
+    self::find($id)->delete();
+  }
+
+  public static function edit($id, $name_original, $name_translation)
+  {
+  	self::where('id', $id)->update(['name_original' => $name_original, 'name_translation' => $name_translation]);
   }
 
   

@@ -46,9 +46,11 @@ class CardsController extends Controller
 
     
 
-    public function edit()
+    public function edit(Card $card, Request $request)
     {
-        //
+        $world = $request->input('world');
+
+        $card->edit( $world['id'], $world['name_original'], $world['name_translation']);
     }
 
     
