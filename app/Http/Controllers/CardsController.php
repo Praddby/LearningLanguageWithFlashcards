@@ -9,32 +9,7 @@ use Validator;
 
 class CardsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $validated = Validator::make($request->all(), [
@@ -62,46 +37,20 @@ class CardsController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Cards  $cards
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Cards $cards)
+   
+    public function show()
     {
-        //
+        return response( CardGroup::with('cards')->get() );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Cards  $cards
-     * @return \Illuminate\Http\Response
-     */
+    
+    
     public function edit(Cards $cards)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Cards  $cards
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Cards $cards)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Cards  $cards
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(Cards $cards)
     {
         //

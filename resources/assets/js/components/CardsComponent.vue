@@ -6,12 +6,13 @@
           <div class="card-header">Карточки</div>
           <div class="card-body">
             <ul class="list-group list-group-flush">
-              <a href="#" class="list-group-item list-group-item-action active">
-                Cras justo odio
+              <a href="#" class="list-group-item list-group-item-action"
+              v-for="(card, index) in cards"
+              :class="{ active: (slag == card.name_category) }"
+              :key="card.id"
+              @click="setCard(card)">
+                {{ card.name_category }}
               </a>
-              <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-              <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-              <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
             </ul>
           </div>
         </div>
@@ -21,20 +22,9 @@
           <div class="card-header">Слова</div>
           <div class="card-body">
             <ul class="list-group list-group-flush">
-              <li class="list-group-item d-flex justify-content-between">
-                <strong>Cras justo odio</strong> - <em>Cras justo odio</em>
-                <span><i class="icon ion-md-create mr-4 btn"></i><i class="icon ion-md-trash btn"></i></span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between">
-                <strong>Dapibus ac facilisis in</strong> - <em>Dapibus ac facilisis in</em>
-                <span><i class="icon ion-md-create mr-4 btn"></i><i class="icon ion-md-trash btn"></i></span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between">
-                <strong>Morbi leo risus</strong> - <em>Morbi leo risus</em>
-                <span><i class="icon ion-md-create mr-4 btn"></i><i class="icon ion-md-trash btn"></i></span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between">
-                <strong>Porta ac consectetur ac</strong> - <em>Porta ac consectetur ac</em>
+              <li class="list-group-item d-flex justify-content-between"
+              v-for="(world, index) in worlds" :key="world.id">
+                <strong>{{ world.name_original }}</strong> - <em>{{ world.name_translation }}</em>
                 <span><i class="icon ion-md-create mr-4 btn"></i><i class="icon ion-md-trash btn"></i></span>
               </li>
             </ul>
@@ -49,7 +39,28 @@
     
 
     export default {
-        
-        
+        data(){
+            return{
+                cards: {},
+                worlds: [],
+                slag: '',
+            }
+        },
+        created() {
+            const t = this;
+            axios.get('/getCards') 
+                .then(({data}) => {
+                    t.cards = data;
+                    t.worlds = data[0].cards;
+                    t.slag = data[0].name_category;
+                });
+        },
+        methods: {
+            setCard(card) {
+                const t = this;
+                t.worlds = card.cards;
+                t.slag = card.name_category;
+            },
+        }        
     };
 </script>

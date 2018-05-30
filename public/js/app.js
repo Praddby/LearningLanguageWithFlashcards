@@ -13904,19 +13904,35 @@ module.exports = Cancel;
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
-/* harmony default export */ __webpack_exports__["a"] = ({});
+/* harmony default export */ __webpack_exports__["a"] = ({
+    data: function data() {
+        return {
+            cards: {},
+            worlds: [],
+            slag: ''
+        };
+    },
+    created: function created() {
+        var t = this;
+        axios.get('/getCards').then(function (_ref) {
+            var data = _ref.data;
+
+            t.cards = data;
+            t.worlds = data[0].cards;
+            t.slag = data[0].name_category;
+        });
+    },
+
+    methods: {
+        setCard: function setCard(card) {
+            var t = this;
+            t.worlds = card.cards;
+            t.slag = card.name_category;
+        }
+    }
+});
 
 /***/ }),
 /* 12 */
@@ -47271,145 +47287,84 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("div", { staticClass: "card card-default" }, [
+          _c("div", { staticClass: "card-header" }, [_vm._v("Карточки")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c(
+              "ul",
+              { staticClass: "list-group list-group-flush" },
+              _vm._l(_vm.cards, function(card, index) {
+                return _c(
+                  "a",
+                  {
+                    key: card.id,
+                    staticClass: "list-group-item list-group-item-action",
+                    class: { active: _vm.slag == card.name_category },
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        _vm.setCard(card)
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(card.name_category) +
+                        "\n            "
+                    )
+                  ]
+                )
+              })
+            )
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-7" }, [
+        _c("div", { staticClass: "card card-default" }, [
+          _c("div", { staticClass: "card-header" }, [_vm._v("Слова")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c(
+              "ul",
+              { staticClass: "list-group list-group-flush" },
+              _vm._l(_vm.worlds, function(world, index) {
+                return _c(
+                  "li",
+                  {
+                    key: world.id,
+                    staticClass:
+                      "list-group-item d-flex justify-content-between"
+                  },
+                  [
+                    _c("strong", [_vm._v(_vm._s(world.name_original))]),
+                    _vm._v(" - "),
+                    _c("em", [_vm._v(_vm._s(world.name_translation))]),
+                    _vm._v(" "),
+                    _vm._m(0, true)
+                  ]
+                )
+              })
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-4" }, [
-          _c("div", { staticClass: "card card-default" }, [
-            _c("div", { staticClass: "card-header" }, [_vm._v("Карточки")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("ul", { staticClass: "list-group list-group-flush" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass:
-                      "list-group-item list-group-item-action active",
-                    attrs: { href: "#" }
-                  },
-                  [_vm._v("\n              Cras justo odio\n            ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "list-group-item list-group-item-action",
-                    attrs: { href: "#" }
-                  },
-                  [_vm._v("Morbi leo risus")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "list-group-item list-group-item-action",
-                    attrs: { href: "#" }
-                  },
-                  [_vm._v("Porta ac consectetur ac")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass:
-                      "list-group-item list-group-item-action disabled",
-                    attrs: { href: "#" }
-                  },
-                  [_vm._v("Vestibulum at eros")]
-                )
-              ])
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-7" }, [
-          _c("div", { staticClass: "card card-default" }, [
-            _c("div", { staticClass: "card-header" }, [_vm._v("Слова")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("ul", { staticClass: "list-group list-group-flush" }, [
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item d-flex justify-content-between"
-                  },
-                  [
-                    _c("strong", [_vm._v("Cras justo odio")]),
-                    _vm._v(" - "),
-                    _c("em", [_vm._v("Cras justo odio")]),
-                    _vm._v(" "),
-                    _c("span", [
-                      _c("i", { staticClass: "icon ion-md-create mr-4 btn" }),
-                      _c("i", { staticClass: "icon ion-md-trash btn" })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item d-flex justify-content-between"
-                  },
-                  [
-                    _c("strong", [_vm._v("Dapibus ac facilisis in")]),
-                    _vm._v(" - "),
-                    _c("em", [_vm._v("Dapibus ac facilisis in")]),
-                    _vm._v(" "),
-                    _c("span", [
-                      _c("i", { staticClass: "icon ion-md-create mr-4 btn" }),
-                      _c("i", { staticClass: "icon ion-md-trash btn" })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item d-flex justify-content-between"
-                  },
-                  [
-                    _c("strong", [_vm._v("Morbi leo risus")]),
-                    _vm._v(" - "),
-                    _c("em", [_vm._v("Morbi leo risus")]),
-                    _vm._v(" "),
-                    _c("span", [
-                      _c("i", { staticClass: "icon ion-md-create mr-4 btn" }),
-                      _c("i", { staticClass: "icon ion-md-trash btn" })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item d-flex justify-content-between"
-                  },
-                  [
-                    _c("strong", [_vm._v("Porta ac consectetur ac")]),
-                    _vm._v(" - "),
-                    _c("em", [_vm._v("Porta ac consectetur ac")]),
-                    _vm._v(" "),
-                    _c("span", [
-                      _c("i", { staticClass: "icon ion-md-create mr-4 btn" }),
-                      _c("i", { staticClass: "icon ion-md-trash btn" })
-                    ])
-                  ]
-                )
-              ])
-            ])
-          ])
-        ])
-      ])
+    return _c("span", [
+      _c("i", { staticClass: "icon ion-md-create mr-4 btn" }),
+      _c("i", { staticClass: "icon ion-md-trash btn" })
     ])
   }
 ]

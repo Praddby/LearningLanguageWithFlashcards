@@ -19,5 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/getCards', 'CardsController@show');
+
 Route::post('/addcards', 'CardsController@store')->name('form-add-cards');
 
