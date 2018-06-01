@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Card extends Model
 {
   protected $fillable = [
-    'name_original', 'name_translation', 'cardgroup_id'
+    'name_original', 'name_translation', 'card_group_id'
   ];
 
   public function CardGroup()

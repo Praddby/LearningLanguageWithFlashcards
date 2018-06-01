@@ -7,32 +7,27 @@ use App\CardGroup;
 use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Input;
+use App\Http\Requests\AddingСard;
 
 class CardsController extends Controller
 {
     
-    public function store(Request $request)
+    public function store(AddingСard $request)
     {
-        $validated = Validator::make($request->all(), [
-            'name_category' => 'required|string',
-        ]);
-        
-        if ($validated->fails()) {
-            return redirect('/home')
-                    ->withErrors($validator)
-                    ->withInput();
-        }
+        $validated = $request->validated();
 
-        $cardgroup = CardGroup::create([
-            'name_category' => $request->input('name_category'),
+        $input = $request->all();
+
+        $card_group = CardGroup::create([
+            'name_category' => $input['name_category'],
         ]);
 
-        foreach ($request->input('name_original') as $key => $value) {
-            if ( $value == '' || $request->input('name_translation')[$key] == '' ) continue;
+        foreach ($input['name_original'] as $key => $value) {
+            if ( $value == '' || $input['name_translation'][$key] == '' ) continue;
             Card::create([
                 'name_original'    => $value,
-                'name_translation' => $request->input('name_translation')[$key],
-                'cardgroup_id'     => $cardgroup->id,
+                'name_translation' => $input['name_translation'][$key],
+                'card_group_id'    => $card_group->id
             ]);
         }
         return redirect()->back();

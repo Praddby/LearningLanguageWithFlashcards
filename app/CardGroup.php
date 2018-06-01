@@ -12,7 +12,7 @@ class CardGroup extends Model
 
   public function cards()
   {
-    return $this->hasMany(Card::class, 'cardgroup_id');
+    return $this->hasMany(Card::class);
   }
 
 
