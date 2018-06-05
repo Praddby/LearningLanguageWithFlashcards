@@ -13921,63 +13921,58 @@ module.exports = Cancel;
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    data: function data() {
-        return {
-            cards: {},
-            worlds: [],
-            slag: '',
-            isEditing: false,
-            name_original: '',
-            name_translation: ''
-        };
+  data: function data() {
+    return {
+      cardGroup: {},
+      cards: [],
+      slug: '',
+      isEditing: false,
+      name_original: '',
+      name_translation: ''
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/getCards').then(function (_ref) {
+      var data = _ref.data;
+
+      _this.cardGroup = data;
+      _this.cards = data[0].cards;
+      _this.slug = data[0].name_category;
+    });
+  },
+
+  methods: {
+    setCard: function setCard(card) {
+      this.cards = card.cards;
+      this.slug = card.name_category;
     },
-    created: function created() {
-        var t = this;
-        axios.get('/getCards').then(function (_ref) {
-            var data = _ref.data;
-
-            t.cards = data;
-            t.worlds = data[0].cards;
-            t.slag = data[0].name_category;
-        });
+    showFormEditCard: function showFormEditCard() {
+      this.isEditing = true;
     },
+    closeFormEditCard: function closeFormEditCard() {
+      this.isEditing = false;
+    },
+    setEdite: function setEdite(card) {
+      this.isEditing = false;
+      axios.post('/editWorld', {
+        card: card
+      });
+    },
+    deleteCard: function deleteCard(card) {
+      var _this2 = this;
 
-    methods: {
-        setCard: function setCard(card) {
-            var t = this;
-            t.worlds = card.cards;
-            t.slag = card.name_category;
-        },
-        showFormEditWorld: function showFormEditWorld() {
-            this.isEditing = true;
-        },
-        closeFormEditWorld: function closeFormEditWorld() {
-            this.isEditing = false;
-        },
-        setEdite: function setEdite(world) {
-            var t = this;
-            t.isEditing = false;
-            axios.post('/editWorld', {
-                world: world
-            }).then(function (_ref2) {
-                var data = _ref2.data;
+      var idx = this.cards.indexOf(card);
+      axios.post('/deleteWorld', {
+        card: card
+      }).then(function (_ref2) {
+        var data = _ref2.data;
 
-                console.log(data);
-            });
-        },
-        deleteWorld: function deleteWorld(world) {
-            var t = this;
-            var idx = t.worlds.indexOf(world);
-            t.worlds.splice(idx, 1);
-            axios.post('/deleteWorld', {
-                world: world
-            }).then(function (_ref3) {
-                var data = _ref3.data;
-
-                t.cards = data;
-            });
-        }
+        _this2.cards.splice(idx, 1);
+      });
     }
+  }
 });
 
 /***/ }),
@@ -47343,16 +47338,17 @@ var render = function() {
             _c(
               "ul",
               { staticClass: "list-group list-group-flush" },
-              _vm._l(_vm.cards, function(card, index) {
+              _vm._l(_vm.cardGroup, function(card, index) {
                 return _c(
                   "a",
                   {
                     key: card.id,
                     staticClass: "list-group-item list-group-item-action",
-                    class: { active: _vm.slag == card.name_category },
+                    class: { active: _vm.slug == card.name_category },
                     attrs: { href: "#" },
                     on: {
                       click: function($event) {
+                        $event.preventDefault()
                         _vm.setCard(card)
                       }
                     }
@@ -47379,11 +47375,11 @@ var render = function() {
             _c(
               "ul",
               { staticClass: "list-group list-group-flush" },
-              _vm._l(_vm.worlds, function(world, index) {
+              _vm._l(_vm.cards, function(card, index) {
                 return _c(
                   "li",
                   {
-                    key: world.id,
+                    key: card.id,
                     staticClass:
                       "list-group-item d-flex justify-content-between"
                   },
@@ -47400,7 +47396,7 @@ var render = function() {
                           }
                         ]
                       },
-                      [_vm._v(_vm._s(world.name_original))]
+                      [_vm._v(_vm._s(card.name_original))]
                     ),
                     _vm._v(" "),
                     _c(
@@ -47430,7 +47426,7 @@ var render = function() {
                           }
                         ]
                       },
-                      [_vm._v(_vm._s(world.name_translation))]
+                      [_vm._v(_vm._s(card.name_translation))]
                     ),
                     _vm._v(" "),
                     _c(
@@ -47448,14 +47444,14 @@ var render = function() {
                       [
                         _c("i", {
                           staticClass: "icon ion-md-create mr-4 btn",
-                          on: { click: _vm.showFormEditWorld }
+                          on: { click: _vm.showFormEditCard }
                         }),
                         _vm._v(" "),
                         _c("i", {
                           staticClass: "icon ion-md-trash btn",
                           on: {
                             click: function($event) {
-                              _vm.deleteWorld(world)
+                              _vm.deleteCard(card)
                             }
                           }
                         })
@@ -47485,20 +47481,20 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: world.name_original,
-                                  expression: "world.name_original"
+                                  value: card.name_original,
+                                  expression: "card.name_original"
                                 }
                               ],
                               staticClass: "form-control mr-4",
                               attrs: { type: "text" },
-                              domProps: { value: world.name_original },
+                              domProps: { value: card.name_original },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
                                   }
                                   _vm.$set(
-                                    world,
+                                    card,
                                     "name_original",
                                     $event.target.value
                                   )
@@ -47511,20 +47507,20 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: world.name_translation,
-                                  expression: "world.name_translation"
+                                  value: card.name_translation,
+                                  expression: "card.name_translation"
                                 }
                               ],
                               staticClass: "form-control mx-4",
                               attrs: { type: "text" },
-                              domProps: { value: world.name_translation },
+                              domProps: { value: card.name_translation },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
                                   }
                                   _vm.$set(
-                                    world,
+                                    card,
                                     "name_translation",
                                     $event.target.value
                                   )
@@ -47540,7 +47536,7 @@ var render = function() {
                                 on: {
                                   click: function($event) {
                                     $event.preventDefault()
-                                    _vm.setEdite(world)
+                                    _vm.setEdite(card)
                                   }
                                 }
                               },
@@ -47555,7 +47551,7 @@ var render = function() {
                                 on: {
                                   click: function($event) {
                                     $event.preventDefault()
-                                    return _vm.closeFormEditWorld($event)
+                                    return _vm.closeFormEditCard($event)
                                   }
                                 }
                               },

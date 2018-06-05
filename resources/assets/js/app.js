@@ -18,5 +18,5 @@ window.Vue = require('vue');
 Vue.component('cards-component', require('./components/CardsComponent.vue').default);
 
 const app = new Vue({
-    el: '#app',
+  el: '#app',
 });

@@ -14,21 +14,21 @@ class CardsController extends Controller
     
     public function store(AddingСard $request)
     {
-        $validated = $request->validated();
+        $data = $request->validated();
+        
+        $cardGroup = CardGroup::create($data);
 
-        $input = $request->all();
-
-        $card_group = CardGroup::create([
-            'name_category' => $input['name_category'],
-        ]);
-
-        foreach ($input['name_original'] as $key => $value) {
-            if ( $value == '' || $input['name_translation'][$key] == '' ) continue;
-            Card::create([
+        foreach ($data['name_original'] as $key => $value) {
+            if ( $value == '' || $data['name_translation'][$key] == '' ) continue;
+            $card = new Card([
                 'name_original'    => $value,
-                'name_translation' => $input['name_translation'][$key],
-                'card_group_id'    => $card_group->id
+                'name_translation' => $data['name_translation'][$key],
             ]);
+
+            $card->cardGroup()->associate($cardGroup);
+
+            $card->save();
+
         }
         return redirect()->back();
     }
@@ -41,20 +41,21 @@ class CardsController extends Controller
 
     
 
-    public function edit(Card $card, Request $request)
+    public function edit(Request $request)
     {
-        $world = $request->input('world');
-
-        $card->edit( $world['id'], $world['name_original'], $world['name_translation']);
+        Card::where('id', $request['card']['id'])
+            ->update([
+                'name_original'     => $request['card']['name_original'],
+                'name_translation'  => $request['card']['name_translation']
+            ]);
     }
 
     
-    public function destroy(Card $card, Request $request)
+    public function destroy(Request $request)
     {
-        $world = $request->input('world');
-        
-        $card->destroy($world['id']);
 
-        return response( CardGroup::with('cards')->get() );
+        $result = Card::destroy( $request['card']['id'] );
+
+        return response( $result );
     }
 }

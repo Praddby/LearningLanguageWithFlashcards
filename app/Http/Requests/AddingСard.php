@@ -24,9 +24,11 @@ class AddingСard extends FormRequest
     public function rules()
     {
         return [
-            'name_category'    => 'required|string',
-            'name_original'    => 'nullable',
-            'name_translation' => 'nullable'
+            'name_category'      => 'bail|required|unique:card_groups|string|max:255',
+            'name_original'      => 'array',
+            'name_translation'   => 'array',
+            'name_original.*'    => 'nullable|string|max:255',
+            'name_translation.*' => 'nullable|string|max:255',
         ];
     }
 }
