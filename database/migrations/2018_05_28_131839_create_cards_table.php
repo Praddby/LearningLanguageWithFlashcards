@@ -18,8 +18,9 @@ class CreateCardsTable extends Migration
             $table->string('name_original');
             $table->string('name_translation');
             $table->unsignedInteger('card_group_id');
-            $table->foreign('card_group_id')->references('id')->on('card_groups');
             $table->timestamps();
+            
+            $table->foreign('card_group_id')->references('id')->on('card_groups')->onDelete('cascade');
         });
     }
 
