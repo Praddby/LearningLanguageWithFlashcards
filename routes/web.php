@@ -24,3 +24,7 @@ Route::post('/deleteWorld', 'CardsController@destroy');
 Route::post('/editWorld', 'CardsController@edit');
 
 Route::post('/addcards', 'CardsController@store')->name('form-add-cards');
+
+Route::group(['middleware' => ['admin']], function() {
+	Route::get('/showUsers', 'Admin\AdminController@showUsers')->name('showUsers');
+});

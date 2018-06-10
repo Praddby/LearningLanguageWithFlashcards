@@ -2,6 +2,10 @@
 
 @section('content')
 <div class="container">
+  <button type="button" class="btn btn-success" id="addCard">Добавить карточку</button>
+  @if( Auth::user()->isAdmin() )
+    <a href="{{ route('showUsers') }}" class="btn btn-primary ml-4">Посмотреть пользователей</a>
+  @endif
   <div class="container">
     <div class="row justify-content">
       <div class="col-md-4 mb-4">
@@ -14,7 +18,6 @@
             </ul>
           </div>
         @endif               
-        <button type="button" class="btn btn-success" id="addCard">Добавить карточку</button>
         <div id="modal_form" class="modal" tabindex="-1" role="dialog"><!-- Сaмo oкнo --> 
           <div class="modal-dialog" role="document">
             <div class="modal-content">

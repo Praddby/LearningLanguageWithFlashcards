@@ -31,4 +31,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function isAdmin()
+    {
+        if (is_object($this->role))
+            return $this->role->name == 'admin';
+    }
+
+    public function getRoleNames()
+    {
+        if (is_object($this->role))
+            return $this->role->name;
+    }
 }
