@@ -12,16 +12,16 @@
       <th>Имя</th>
       <th>E-mail</th>
       <th>Роли</th>
-      <th width="320px">Действия</th>
+      <th width="300px">Действия</th>
     </tr>
-    @foreach ($data as $key => $user)
+    @foreach ($users as $key => $user)
     <tr>
-      <td>{{ ++$i }}</td>
+      <td>{{ ++$key + ($users->currentPage()-1)*5 }}</td>
       <td>{{ $user->name }}</td>
       <td>{{ $user->email }}</td>
       <td>
-        @if(!empty($user->getRoleNames()))
-          <label class="badge badge-success">{{ $user->getRoleNames() }}</label>
+        @if( !empty( $user->present()->getRoleNames() ) )
+          <label class="badge badge-success">{{ $user->present()->getRoleNames() }}</label>
         @endif
       </td>
       <td>
@@ -34,7 +34,7 @@
   </table>
 
 
-  {!! $data->render() !!}
+  {!! $users->render() !!}
 </div>
 
 @endsection

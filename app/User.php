@@ -4,10 +4,12 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laracasts\Presenter\PresentableTrait;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use PresentableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +29,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $presenter = 'App\Http\Presenters\UserPresenter';
+
     public function role()
     {
         return $this->belongsTo(Role::class);
@@ -38,9 +42,4 @@ class User extends Authenticatable
             return $this->role->name == 'admin';
     }
 
-    public function getRoleNames()
-    {
-        if (is_object($this->role))
-            return $this->role->name;
-    }
 }

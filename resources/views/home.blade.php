@@ -28,7 +28,7 @@
                 </button>
               </div>
               <div class="modal-body">
-                <form action="{{ route('form-add-cards') }}" method="POST" id="form-add-cards">
+                <form action="{{ route('formAddCards') }}" method="POST" id="form-add-cards">
                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
                   <div class="row mb-2">
                     <div class="col">

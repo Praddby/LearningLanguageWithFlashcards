@@ -16,8 +16,7 @@ class AdminController extends Controller
 
     public function showUsers(Request $request)
     {
-    	$data = User::orderBy('id','DESC')->paginate(5);
-        return view('admin.users',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+    	$users = User::orderBy('id','DESC')->paginate(5);
+        return view('admin.users',compact('users'));
     }
 }

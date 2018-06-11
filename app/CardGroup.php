@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class CardGroup extends Model
 {
-	protected $fillable = [
-	   	'name_category'
-	];
+    protected $fillable = [
+        'name_category'
+    ];
 
-	public function cards()
-	{
-		return $this->hasMany(Card::class);
-	}
+    public function cards()
+    {
+        return $this->hasMany(Card::class);
+    }
 
 }

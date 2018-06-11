@@ -23,8 +23,8 @@ Route::get('/getCards', 'CardsController@show');
 Route::post('/deleteWorld', 'CardsController@destroy');
 Route::post('/editWorld', 'CardsController@edit');
 
-Route::post('/addcards', 'CardsController@store')->name('form-add-cards');
+Route::post('/addcards', 'CardsController@store')->name('formAddCards');
 
 Route::group(['middleware' => ['admin']], function() {
-	Route::get('/showUsers', 'Admin\AdminController@showUsers')->name('showUsers');
+    Route::get('/showUsers', 'Admin\AdminController@showUsers')->name('showUsers');
 });
