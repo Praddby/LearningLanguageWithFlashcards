@@ -14,12 +14,14 @@ class AdminMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $guard = null)
     {
-        if( !Auth::user()->isAdmin() ){
-            return redirect('/');
+        if (Auth::guard($guard)->check()) {
+            if( !Auth::user()->isAdmin() ){
+                return redirect('/home');
+            }
+            return $next($request);
         }
-
-        return $next($request);
+        return redirect('/');
     }
 }

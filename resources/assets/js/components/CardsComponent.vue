@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="row">
+      <a href="#" class="btn btn-primary mb-4 ml-4" @click="switchComponents('')">Добавить</a>
+    </div>
+    <div class="row">
       <div class="col-md-4">
         <div class="card card-default">
           <div class="card-header">Карточки</div>

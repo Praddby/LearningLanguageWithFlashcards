@@ -9,14 +9,18 @@ use App\User;
 class AdminController extends Controller
 {
 
-	public function __construct()
-	{
-		$this->middleware('admin');
-	}
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
+    public function index()
+    {
+        return view('admin.index');
+    }
 
     public function showUsers(Request $request)
     {
-    	$users = User::orderBy('id','DESC')->paginate(5);
-        return view('admin.users',compact('users'));
+        return response( User::with('role')->orderBy('id','DESC')->paginate(5) );
     }
 }

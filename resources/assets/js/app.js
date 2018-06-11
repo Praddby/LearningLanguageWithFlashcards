@@ -16,7 +16,21 @@ window.Vue = require('vue');
  */
 
 Vue.component('cards-component', require('./components/CardsComponent.vue').default);
+Vue.component('nav-component', require('./components/NavComponent.vue').default);
+Vue.component('users-component', require('./components/UsersComponent.vue').default);
+
+import Bus from './components/Bus.js';
 
 const app = new Vue({
   el: '#app',
+  data(){
+    	return {
+
+    	}
+    },
+    computed: {
+        component: function () {
+            return Bus.component;
+        }, 
+    },
 });
