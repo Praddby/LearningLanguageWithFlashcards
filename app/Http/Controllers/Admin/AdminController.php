@@ -21,6 +21,6 @@ class AdminController extends Controller
 
     public function showUsers(Request $request)
     {
-        return response( User::with('role')->orderBy('id','DESC')->paginate(5) );
+        return response( User::with('role')->orderBy('role_id','DESC')->orderBy('name')->paginate(5) );
     }
 }
