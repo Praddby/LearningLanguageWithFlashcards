@@ -18,6 +18,7 @@ window.Vue = require('vue');
 Vue.component('cards-component', require('./components/CardsComponent.vue').default);
 Vue.component('nav-component', require('./components/NavComponent.vue').default);
 Vue.component('users-component', require('./components/UsersComponent.vue').default);
+Vue.component('roles-component', require('./components/RolesComponent.vue').default);
 
 import Bus from './components/Bus.js';
 

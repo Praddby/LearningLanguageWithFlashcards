@@ -27,6 +27,6 @@ Route::post('/addcards', 'CardsController@store')->name('formAddCards');
 
 Route::group(['middleware' => ['admin']], function() {
 	Route::get('/admin', 'Admin\AdminController@index')->name('admin');
-    Route::get('/showUsers', 'Admin\AdminController@showUsers')->name('showUsers');
-    Route::apiResource('user_roles', 'UserRolesController');
+    Route::apiResource('user_roles', 'Admin\UserRolesController')->only(['index', 'show', 'update', 'destroy']);
+    Route::apiResource('roles', 'Admin\RolesController')->only(['index', 'store', 'destroy']);
 });

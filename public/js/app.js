@@ -25235,7 +25235,7 @@ module.exports = Vue;
   created: function created() {
     var _this = this;
 
-    axios.get('/showUsers').then(function (_ref) {
+    axios.get('/user_roles').then(function (_ref) {
       var data = _ref.data;
 
       _this.pagination = data.data;
@@ -25352,6 +25352,7 @@ window.Vue = __webpack_require__(13);
 Vue.component('cards-component', __webpack_require__(44).default);
 Vue.component('nav-component', __webpack_require__(46).default);
 Vue.component('users-component', __webpack_require__(48).default);
+Vue.component('roles-component', __webpack_require__(56).default);
 
 
 
@@ -48090,15 +48091,15 @@ var render = function() {
       "a",
       {
         staticClass: "list-group-item list-group-item-action",
-        class: { active: false },
+        class: { active: _vm.component == "roles-component" },
         attrs: { href: "#" },
         on: {
           click: function($event) {
-            _vm.switchComponents("")
+            _vm.switchComponents("roles-component")
           }
         }
       },
-      [_vm._v("Другое ...")]
+      [_vm._v("Роли")]
     )
   ])
 }
@@ -48517,6 +48518,396 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Bus_js__ = __webpack_require__(4);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  data: function data() {
+    return {
+      pagination: {},
+      roles: {},
+      role: ''
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/roles').then(function (_ref) {
+      var data = _ref.data;
+
+      _this.pagination = data;
+      _this.roles = data.data;
+    });
+  },
+
+  methods: {
+    nextPageUrl: function nextPageUrl() {
+      var _this2 = this;
+
+      if (this.pagination.current_page != this.pagination.last_page) {
+        axios.get(this.pagination.next_page_url).then(function (_ref2) {
+          var data = _ref2.data;
+
+          _this2.pagination = data;
+          _this2.roles = data.data;
+        });
+      }
+    },
+    prevPageUrl: function prevPageUrl() {
+      var _this3 = this;
+
+      if (this.pagination.current_page != 1) {
+        axios.get(this.pagination.prev_page_url).then(function (_ref3) {
+          var data = _ref3.data;
+
+          _this3.pagination = data;
+          _this3.roles = data.data;
+        });
+      }
+    },
+    PageUrl: function PageUrl(pageNo) {
+      var _this4 = this;
+
+      if (this.pagination.current_page != pageNo) {
+        axios.get(this.pagination.path + '?page=' + pageNo).then(function (_ref4) {
+          var data = _ref4.data;
+
+          _this4.pagination = data;
+          _this4.roles = data.data;
+        });
+      }
+    },
+    addRole: function addRole() {
+      var _this5 = this;
+
+      axios.post('/roles', { role: this.role }).then(function (_ref5) {
+        var data = _ref5.data;
+
+        _this5.roles.push(data);
+        _this5.role = '';
+      });
+    },
+    destroyRole: function destroyRole(role) {
+      var _this6 = this;
+
+      var idx = this.roles.indexOf(role);
+      axios.delete('roles/' + role.id).then(function (_ref6) {
+        var data = _ref6.data;
+
+        _this6.roles.splice(idx, 1);
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 56 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_RolesComponent_vue__ = __webpack_require__(55);
+/* empty harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_72c315f7_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_RolesComponent_vue__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(3);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_RolesComponent_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_72c315f7_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_RolesComponent_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_72c315f7_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_RolesComponent_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\RolesComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-72c315f7", Component.options)
+  } else {
+    hotAPI.reload("data-v-72c315f7", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["default"] = (Component.exports);
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "table",
+      { staticClass: "table table-bordered" },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._l(_vm.roles, function(role, index) {
+          return _c("tr", { key: role.id }, [
+            _c("td", [_vm._v(_vm._s(index + 1))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(role.name))]),
+            _vm._v(" "),
+            _c("td", [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-danger",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      _vm.destroyRole(role)
+                    }
+                  }
+                },
+                [_vm._v("Удалить")]
+              )
+            ])
+          ])
+        }),
+        _vm._v(" "),
+        _c("tr", [
+          _c("td", { attrs: { colspan: "3" } }, [
+            _c("div", { staticClass: "input-group mb-3" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.role,
+                    expression: "role"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  placeholder: "Введите роль",
+                  "aria-describedby": "basic-addon2"
+                },
+                domProps: { value: _vm.role },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.role = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group-append" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-secondary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.addRole()
+                      }
+                    }
+                  },
+                  [_vm._v("Добавить")]
+                )
+              ])
+            ])
+          ])
+        ])
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+      _c(
+        "ul",
+        { staticClass: "pagination" },
+        [
+          _c("li", { staticClass: "page-item" }, [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
+                attrs: { href: "#", "aria-label": "Previous" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    _vm.prevPageUrl()
+                  }
+                }
+              },
+              [
+                _c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("«")]),
+                _vm._v(" "),
+                _c("span", { staticClass: "sr-only" }, [_vm._v("Previous")])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.pagination.last_page, function(pageNo) {
+            return _c(
+              "li",
+              {
+                staticClass: "page-item",
+                class: { active: _vm.pagination.current_page == pageNo }
+              },
+              [
+                _c(
+                  "a",
+                  {
+                    staticClass: "page-link",
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        _vm.PageUrl(pageNo)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(pageNo))]
+                )
+              ]
+            )
+          }),
+          _vm._v(" "),
+          _c("li", { staticClass: "page-item" }, [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
+                attrs: { href: "#", "aria-label": "Next" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    _vm.nextPageUrl()
+                  }
+                }
+              },
+              [
+                _c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("»")]),
+                _vm._v(" "),
+                _c("span", { staticClass: "sr-only" }, [_vm._v("Next")])
+              ]
+            )
+          ])
+        ],
+        2
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("№")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Роль")]),
+      _vm._v(" "),
+      _c("th", { attrs: { width: "300px" } }, [_vm._v("Действия")])
+    ])
+  }
+]
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-72c315f7", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
 
 /***/ })
 /******/ ]);

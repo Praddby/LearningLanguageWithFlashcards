@@ -108,7 +108,7 @@
       }
     },
     created() {
-      axios.get('/showUsers')
+      axios.get('/user_roles')
         .then(({data}) => {
           this.pagination = data.data;
           this.users = data.data.data;

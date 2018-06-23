@@ -9,8 +9,8 @@
                 :class="{ active: (component == 'users-component') }">Пользователи</a>
 
     <a href="#" class="list-group-item list-group-item-action"
-                @click="switchComponents('')"
-                :class="{ active: (false) }">Другое ...</a>
+                @click="switchComponents('roles-component')"
+                :class="{ active: (component == 'roles-component') }">Роли</a>
   </div>
 </template>
 
