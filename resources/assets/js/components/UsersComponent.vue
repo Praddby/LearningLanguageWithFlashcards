@@ -13,12 +13,24 @@
           <td>{{ index+1 }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
-          <td>
+          <td v-if="(showEdite && user.id == showEdite)">
+            <form>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <button class="btn btn-outline-secondary" type="submit" @click="changeRole(user)">Button</button>
+                </div>
+                <select class="custom-select" id="inputGroupSelect03" v-model="selectedRole">
+                  <option :value="role" v-for="(role, index) in roles" :key="role.id">{{ role.name }}</option>
+                </select>
+              </div>
+            </form>
+          </td>
+          <td v-if="!(showEdite && user.id == showEdite)">
             <label class="badge badge-success" v-if="user.role">{{ user.role.name }}</label>
           </td>
           <td>
             <a class="btn btn-info" href="#" @click="showUser(user.id)">Показать</a>
-            <a class="btn btn-primary" href="#">Изменить</a>
+            <a class="btn btn-primary" href="#" @click="showEditeRoleUser(user.id)">Изменить</a>
             <a class="btn btn-danger" href="#" @click="destroyUserRole(user)">Удалить</a>
           </td>
         </tr>
@@ -89,14 +101,18 @@
         pagination: {},
         users: {},
         user_role: {},
-        isUser: false
+        isUser: false,
+        showEdite: false,
+        roles: {},
+        selectedRole: ''
       }
     },
     created() {
       axios.get('/showUsers')
         .then(({data}) => {
-          this.pagination = data;
-          this.users = data.data;
+          this.pagination = data.data;
+          this.users = data.data.data;
+          this.roles = data.role;
         });    
     },
     methods: {
@@ -104,8 +120,8 @@
         if (this.pagination.current_page != this.pagination.last_page) {
           axios.get(this.pagination.next_page_url)
             .then(({data}) => {
-              this.pagination = data;
-              this.users = data.data;
+              this.pagination = data.data;
+              this.users = data.data.data;
             });
         }
       },
@@ -113,8 +129,8 @@
         if (this.pagination.current_page != 1) {
           axios.get(this.pagination.prev_page_url)
             .then(({data}) => {
-              this.pagination = data;
-              this.users = data.data;
+              this.pagination = data.data;
+              this.users = data.data.data;
             });
         }
       },
@@ -122,8 +138,8 @@
         if (this.pagination.current_page != pageNo) {
           axios.get(this.pagination.path+'?page='+pageNo)
             .then(({data}) => {
-              this.pagination = data;
-              this.users = data.data;
+              this.pagination = data.data;
+              this.users = data.data.data;
             });
         }
       },
@@ -137,10 +153,20 @@
       showTableUsers(){
         this.isUser = false;
       },
+      showEditeRoleUser(id){
+        this.showEdite = id;
+      },
       destroyUserRole(user){
         axios.delete('user_roles/' + user.id)
           .then(({data}) => {
             user.role = null;
+          });
+      },
+      changeRole(user){
+        axios.put('user_roles/' + user.id, { role: this.selectedRole, roleId: this.selectedRole.id } )
+          .then(({data}) => {
+            user.role = this.selectedRole;
+            this.showEdite = false;
           });
       },
     }        

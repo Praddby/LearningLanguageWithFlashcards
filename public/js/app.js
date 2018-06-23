@@ -25204,6 +25204,18 @@ module.exports = Vue;
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -25214,7 +25226,10 @@ module.exports = Vue;
       pagination: {},
       users: {},
       user_role: {},
-      isUser: false
+      isUser: false,
+      showEdite: false,
+      roles: {},
+      selectedRole: ''
     };
   },
   created: function created() {
@@ -25223,8 +25238,9 @@ module.exports = Vue;
     axios.get('/showUsers').then(function (_ref) {
       var data = _ref.data;
 
-      _this.pagination = data;
-      _this.users = data.data;
+      _this.pagination = data.data;
+      _this.users = data.data.data;
+      _this.roles = data.role;
     });
   },
 
@@ -25236,8 +25252,8 @@ module.exports = Vue;
         axios.get(this.pagination.next_page_url).then(function (_ref2) {
           var data = _ref2.data;
 
-          _this2.pagination = data;
-          _this2.users = data.data;
+          _this2.pagination = data.data;
+          _this2.users = data.data.data;
         });
       }
     },
@@ -25248,8 +25264,8 @@ module.exports = Vue;
         axios.get(this.pagination.prev_page_url).then(function (_ref3) {
           var data = _ref3.data;
 
-          _this3.pagination = data;
-          _this3.users = data.data;
+          _this3.pagination = data.data;
+          _this3.users = data.data.data;
         });
       }
     },
@@ -25260,8 +25276,8 @@ module.exports = Vue;
         axios.get(this.pagination.path + '?page=' + pageNo).then(function (_ref4) {
           var data = _ref4.data;
 
-          _this4.pagination = data;
-          _this4.users = data.data;
+          _this4.pagination = data.data;
+          _this4.users = data.data.data;
         });
       }
     },
@@ -25278,11 +25294,24 @@ module.exports = Vue;
     showTableUsers: function showTableUsers() {
       this.isUser = false;
     },
+    showEditeRoleUser: function showEditeRoleUser(id) {
+      this.showEdite = id;
+    },
     destroyUserRole: function destroyUserRole(user) {
       axios.delete('user_roles/' + user.id).then(function (_ref6) {
         var data = _ref6.data;
 
         user.role = null;
+      });
+    },
+    changeRole: function changeRole(user) {
+      var _this6 = this;
+
+      axios.put('user_roles/' + user.id, { role: this.selectedRole, roleId: this.selectedRole.id }).then(function (_ref7) {
+        var data = _ref7.data;
+
+        user.role = _this6.selectedRole;
+        _this6.showEdite = false;
       });
     }
   }
@@ -48178,13 +48207,78 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(user.email))]),
                 _vm._v(" "),
-                _c("td", [
-                  user.role
-                    ? _c("label", { staticClass: "badge badge-success" }, [
-                        _vm._v(_vm._s(user.role.name))
+                _vm.showEdite && user.id == _vm.showEdite
+                  ? _c("td", [
+                      _c("form", [
+                        _c("div", { staticClass: "input-group mb-3" }, [
+                          _c("div", { staticClass: "input-group-prepend" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-outline-secondary",
+                                attrs: { type: "submit" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.changeRole(user)
+                                  }
+                                }
+                              },
+                              [_vm._v("Button")]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.selectedRole,
+                                  expression: "selectedRole"
+                                }
+                              ],
+                              staticClass: "custom-select",
+                              attrs: { id: "inputGroupSelect03" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.selectedRole = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                }
+                              }
+                            },
+                            _vm._l(_vm.roles, function(role, index) {
+                              return _c(
+                                "option",
+                                { key: role.id, domProps: { value: role } },
+                                [_vm._v(_vm._s(role.name))]
+                              )
+                            })
+                          )
+                        ])
                       ])
-                    : _vm._e()
-                ]),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                !(_vm.showEdite && user.id == _vm.showEdite)
+                  ? _c("td", [
+                      user.role
+                        ? _c("label", { staticClass: "badge badge-success" }, [
+                            _vm._v(_vm._s(user.role.name))
+                          ])
+                        : _vm._e()
+                    ])
+                  : _vm._e(),
                 _vm._v(" "),
                 _c("td", [
                   _c(
@@ -48203,7 +48297,15 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "a",
-                    { staticClass: "btn btn-primary", attrs: { href: "#" } },
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          _vm.showEditeRoleUser(user.id)
+                        }
+                      }
+                    },
                     [_vm._v("Изменить")]
                   ),
                   _vm._v(" "),

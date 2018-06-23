@@ -67,9 +67,11 @@ class UserRolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $userId)
     {
-        //
+        $user = User::find($userId);
+        $user->role_id = ($request['roleId']);
+        $user->save();
     }
 
     /**
