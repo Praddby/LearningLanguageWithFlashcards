@@ -144,10 +144,12 @@
         }
       },
       showUser(id){
-        axios.get('user_roles/' + id)
+        axios.get('user_roles/' + 'ad')
           .then(({data}) => {
             this.user_role = data;
             this.isUser = true;
+          }).catch(function (error) {
+            alert(error.message);
           });
       },
       showTableUsers(){
@@ -160,6 +162,8 @@
         axios.delete('user_roles/' + user.id)
           .then(({data}) => {
             user.role = null;
+          }).catch(function (error) {
+            alert(error.message);
           });
       },
       changeRole(user){
@@ -167,6 +171,8 @@
           .then(({data}) => {
             user.role = this.selectedRole;
             this.showEdite = false;
+          }).catch(function (error) {
+            alert(error.message);
           });
       },
     }        

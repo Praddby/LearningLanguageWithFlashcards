@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="alert alert-danger" role="alert" v-if="(error)">
+      {{ error }}
+    </div>
     <table class="table table-bordered">
       <tr>
         <th>№</th>
@@ -48,14 +51,13 @@
 
 <script>
 
-  import Bus from './Bus.js';
-
   export default {
     data(){
       return{
         pagination: {},
         roles: {},
-        role: ''
+        role: '',
+        error: ''
       }
     },
     created() {
@@ -98,6 +100,16 @@
           .then(({data}) => {
             this.roles.push(data);
             this.role = '';
+          }).catch(function (error) {
+            console.log(error);
+            console.log('--------------------------------------------------');
+            console.log('Тип error: ' + typeof error);
+            console.log('--------------------------------------------------');
+            for (key in error) {
+              console.log('Имя свойства: ' + error[key]);
+            }
+  
+            this.error = error;
           });
       },
       destroyRole(role){

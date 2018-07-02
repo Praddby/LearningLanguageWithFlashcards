@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RoleRequest;
 use App\User;
 use App\Role;
 
@@ -22,9 +23,10 @@ class UserRolesController extends Controller
      */
     public function index()
     {
-        return response([
+        return [
             'data' => User::with('role')->orderBy('role_id','DESC')->orderBy('name')->paginate(5),
-            'role' => Role::all()] );
+            'role' => Role::all()
+        ];
     }
 
     /**
@@ -35,7 +37,7 @@ class UserRolesController extends Controller
      */
     public function show($id)
     {
-        return response( User::with('role')->find($id) );
+        return User::with('role')->find($id);
     }
 
     /**
@@ -45,7 +47,7 @@ class UserRolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $userId)
+    public function update(RoleRequest $request, $userId)
     {
         $user = User::find($userId);
         $user->role_id = ($request['roleId']);

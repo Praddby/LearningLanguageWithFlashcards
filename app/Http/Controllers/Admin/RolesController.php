@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RoleRequest;
 use App\Role;
 
 class RolesController extends Controller
@@ -15,7 +16,7 @@ class RolesController extends Controller
      */
     public function index()
     {
-        return response( Role::orderBy('name')->paginate(5) );
+        return Role::orderBy('name')->paginate(5);
     }
 
     /**
@@ -24,13 +25,14 @@ class RolesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
+        
         $role = new Role;
         $role->name = $request->role;
         $role->save();
 
-        return response( $role );
+        return $role;
     }
 
     /**
@@ -41,7 +43,6 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-        $result = Role::destroy( $id );
-        return response( $result );
+        Role::destroy( $id );
     }
 }
