@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="alert alert-danger" role="alert" v-if="(error)">
+    <div class="alert alert-danger" role="alert" v-if="errors" v-for="error in errors">
       {{ error }}
     </div>
     <table class="table table-bordered">
@@ -57,7 +57,7 @@
         pagination: {},
         roles: {},
         role: '',
-        error: ''
+        errors: []
       }
     },
     created() {
@@ -97,19 +97,11 @@
       },
       addRole(){
         axios.post('/roles', {role: this.role})
-          .then(({data}) => {
+          .then( ({data}) => {
             this.roles.push(data);
             this.role = '';
-          }).catch(function (error) {
-            console.log(error);
-            console.log('--------------------------------------------------');
-            console.log('Тип error: ' + typeof error);
-            console.log('--------------------------------------------------');
-            for (key in error) {
-              console.log('Имя свойства: ' + error[key]);
-            }
-  
-            this.error = error;
+          }).catch( (error) => {
+            this.errors =  error.response.data.errors.role;
           });
       },
       destroyRole(role){
@@ -117,6 +109,8 @@
         axios.delete('roles/' + role.id)
           .then(({data}) => {
             this.roles.splice(idx, 1);
+          }).catch( (error) => {
+            this.errors = [error.response.data.message];
           });
       }
     }        

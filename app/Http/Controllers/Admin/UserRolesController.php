@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RoleRequest;
+use App\Http\Requests\UserRoleRequest;
 use App\User;
 use App\Role;
 
@@ -47,7 +47,7 @@ class UserRolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(RoleRequest $request, $userId)
+    public function update(UserRoleRequest $request, $userId)
     {
         $user = User::find($userId);
         $user->role_id = ($request['roleId']);

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="alert alert-danger" role="alert" v-if="errors" v-for="error in errors">
+      {{ error }}
+    </div>
     <div class="table" v-show="!isUser">
       <table class="table table-bordered">
         <tr>
@@ -15,7 +18,7 @@
           <td>{{ user.email }}</td>
           <td v-if="(showEdite && user.id == showEdite)">
             <form>
-              <div class="input-group mb-3">
+              <div class="input-group">
                 <div class="input-group-prepend">
                   <button class="btn btn-outline-secondary" type="submit" @click="changeRole(user)">Button</button>
                 </div>
@@ -104,7 +107,8 @@
         isUser: false,
         showEdite: false,
         roles: {},
-        selectedRole: ''
+        selectedRole: '',
+        errors: []
       }
     },
     created() {
@@ -156,23 +160,26 @@
         this.isUser = false;
       },
       showEditeRoleUser(id){
-        this.showEdite = id;
+        if ( this.showEdite == id )
+          this.showEdite = false;
+        else
+          this.showEdite = id;
       },
       destroyUserRole(user){
         axios.delete('user_roles/' + user.id)
           .then(({data}) => {
             user.role = null;
-          }).catch(function (error) {
-            alert(error.message);
+          }).catch( (error) => {
+            this.errors = [error.response.data.message];
           });
       },
       changeRole(user){
-        axios.put('user_roles/' + user.id, { role: this.selectedRole, roleId: this.selectedRole.id } )
+        axios.put('user_roles/' + user.id, { roleId: this.selectedRole.id } )
           .then(({data}) => {
             user.role = this.selectedRole;
             this.showEdite = false;
-          }).catch(function (error) {
-            alert(error.message);
+          }).catch( (error) => {
+            this.errors =  error.response.data.errors.roleId;
           });
       },
     }        
