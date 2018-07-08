@@ -3,6 +3,7 @@
     <div class="alert alert-danger" role="alert" v-if="errors" v-for="error in errors">
       {{ error }}
     </div>
+    <modal-component :modal="modal" @delete="destroyUserRole"></modal-component>
     <div class="table" v-show="!isUser">
       <table class="table table-bordered">
         <tr>
@@ -34,7 +35,12 @@
           <td>
             <a class="btn btn-info" href="#" @click="showUser(user.id)">Показать</a>
             <a class="btn btn-primary" href="#" @click="showEditeRoleUser(user.id)">Изменить</a>
-            <a class="btn btn-danger" href="#" @click="destroyUserRole(user)">Удалить</a>
+            <a href="#" type="button"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              @click="modal = user" 
+              :class="[(user.role) ? 'btn btn-danger' : 'disabled btn btn-secondary']"
+              >Удалить</a>
           </td>
         </tr>
       </table>
@@ -108,7 +114,8 @@
         showEdite: false,
         roles: {},
         selectedRole: '',
-        errors: []
+        errors: [],
+        modal: {}
       }
     },
     created() {

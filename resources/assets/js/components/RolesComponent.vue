@@ -3,7 +3,7 @@
     <div class="alert alert-danger" role="alert" v-if="errors" v-for="error in errors">
       {{ error }}
     </div>
-    <modal-component :modal="modal"></modal-component>
+    <modal-component :modal="modal" @delete="destroyRole"></modal-component>
     <table class="table table-bordered">
       <tr>
         <th>№</th>
@@ -106,7 +106,7 @@
             this.errors =  error.response.data.errors.role;
           });
       },
-      destroyRole(role){
+      destroyRole: function(role) {
         let idx = this.roles.indexOf(role);
         axios.delete('roles/' + role.id)
           .then(({data}) => {

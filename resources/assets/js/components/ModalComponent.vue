@@ -12,7 +12,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-          <button type="button" class="btn btn-primary px-4" data-dismiss="modal" @click="$emit('delete')">Да</button>
+          <button type="button" class="btn btn-primary px-4" data-dismiss="modal" @click="onDelete(modal)">Да</button>
         </div>
       </div>
     </div>
@@ -24,11 +24,12 @@
 <script>
 
   export default {
-    data(){
-      return{
 
-      }
-    },
     props: ['modal'],
+    methods: {
+      onDelete(modal) {
+        this.$emit('delete', modal);
+      },
+    },
   };
 </script>
