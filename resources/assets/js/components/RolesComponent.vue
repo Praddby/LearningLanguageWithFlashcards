@@ -3,6 +3,7 @@
     <div class="alert alert-danger" role="alert" v-if="errors" v-for="error in errors">
       {{ error }}
     </div>
+    <modal-component :modal="modal"></modal-component>
     <table class="table table-bordered">
       <tr>
         <th>№</th>
@@ -13,7 +14,7 @@
         <td>{{ index+1 }}</td>
         <td>{{ role.name }}</td>
         <td>
-          <a class="btn btn-danger" href="#" @click="destroyRole(role)">Удалить</a>
+          <a class="btn btn-danger" type="button" data-toggle="modal" @click="modal = role" data-target="#exampleModal" href="#">Удалить</a>
         </td>
       </tr>
       <tr>
@@ -57,7 +58,8 @@
         pagination: {},
         roles: {},
         role: '',
-        errors: []
+        errors: [],
+        modal: {}
       }
     },
     created() {

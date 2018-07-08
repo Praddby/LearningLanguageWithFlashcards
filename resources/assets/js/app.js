@@ -18,6 +18,7 @@ Vue.component('cards-component', require('./components/CardsComponent.vue').defa
 Vue.component('nav-component', require('./components/NavComponent.vue').default);
 Vue.component('users-component', require('./components/UsersComponent.vue').default);
 Vue.component('roles-component', require('./components/RolesComponent.vue').default);
+Vue.component('modal-component', require('./components/ModalComponent.vue').default);
 
 import Bus from './components/Bus.js';
 
@@ -55,6 +56,10 @@ const app = new Vue({
             $('#overlay').fadeOut(400); // скрывaем пoдлoжку
           }
         );
+    });
+
+    $('#myModal').on('shown.bs.modal', function () {
+      $('#myInput').trigger('focus');
     });
   }
 });
