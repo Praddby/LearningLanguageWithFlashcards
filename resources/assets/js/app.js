@@ -15,10 +15,11 @@ window.Vue = require('vue');
  */
 
 Vue.component('cards-component', require('./components/CardsComponent.vue').default);
-Vue.component('nav-component', require('./components/NavComponent.vue').default);
-Vue.component('users-component', require('./components/UsersComponent.vue').default);
-Vue.component('roles-component', require('./components/RolesComponent.vue').default);
-Vue.component('modal-component', require('./components/ModalComponent.vue').default);
+Vue.component('nav-component', require('./components/admin/NavComponent.vue').default);
+Vue.component('users-component', require('./components/admin/UsersComponent.vue').default);
+Vue.component('roles-component', require('./components/admin/RolesComponent.vue').default);
+Vue.component('modal-delete-component', require('./components/modals/ModalDeleteRoleComponent.vue').default);
+Vue.component('modal-add-component', require('./components/modals/ModalAddCardComponent.vue').default);
 
 import Bus from './components/Bus.js';
 

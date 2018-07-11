@@ -3,7 +3,7 @@
     <div class="alert alert-danger" role="alert" v-if="errors" v-for="error in errors">
       {{ error }}
     </div>
-    <modal-component :modal="modal" @delete="destroyUserRole"></modal-component>
+    <modal-delete-component :modal="modal" @delete="destroyUserRole"></modal-delete-component>
     <div class="table" v-show="!isUser">
       <table class="table table-bordered">
         <tr>
@@ -102,7 +102,7 @@
 
 <script>
 
-  import Bus from './Bus.js';
+  import Bus from '../Bus.js';
 
   export default {
     data(){

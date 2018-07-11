@@ -16,7 +16,7 @@
 
 <script>
 
-  import Bus from './Bus.js';
+  import Bus from '../Bus.js';
 
   export default {
     data(){
