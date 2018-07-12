@@ -20,11 +20,11 @@ class UsersSeeder extends Seeder
         ]);
 
         for ($i=0; $i < 13; $i++) { 
-        	 User::insert([
-	            'name' => str_random(10),
-	            'email' => str_random(10).'@gmail.com',
-	            'password' => bcrypt('secret'),
-	        ]);
+            User::insert([
+                'name' => str_random(10),
+                'email' => str_random(10).'@gmail.com',
+                'password' => bcrypt('secret'),
+            ]);
         }
     }
 }

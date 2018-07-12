@@ -1,8 +1,8 @@
 <template>
   <div>
     <a href="#" class="list-group-item list-group-item-action"
-                @click="switchComponents('cards-component')"
-                :class="{ active: (component == 'cards-component') }">Карточки</a>
+                @click="switchComponents('admin-cards-component')"
+                :class="{ active: (component == 'admin-cards-component') }">Карточки</a>
 
     <a href="#" class="list-group-item list-group-item-action"
                 @click="switchComponents('users-component')"

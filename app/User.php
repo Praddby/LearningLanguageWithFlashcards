@@ -39,7 +39,7 @@ class User extends Authenticatable
     public function isAdmin()
     {
         if (is_object($this->role))
-            return $this->role->name == 'admin';
+            return strtolower($this->role->name) == 'admin';
     }
 
 }
