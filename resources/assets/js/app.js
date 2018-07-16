@@ -23,8 +23,9 @@ Vue.component('roles-component', require('./components/admin/RolesComponent.vue'
 Vue.component('admin-cards-component', require('./components/admin/CardsComponent.vue').default);
 
 // modals
-Vue.component('modal-delete-component', require('./components/modals/ModalDeleteRoleComponent.vue').default);
+Vue.component('modal-delete-component', require('./components/modals/ModalDeleteComponent.vue').default);
 Vue.component('modal-add-cards-component', require('./components/modals/ModalAddCardComponent.vue').default);
+Vue.component('input-card-component', require('./components/modals/InputForModalAddCardComponent.vue').default);
 
 import Bus from './components/Bus.js';
 

@@ -10,9 +10,9 @@ class CardGroup extends Model
         'name_category'
     ];
 
-    public function cards()
+    public function standardCards()
     {
-        return $this->hasMany(Card::class);
+        return $this->hasMany(StandardCards::class);
     }
 
 }

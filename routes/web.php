@@ -29,4 +29,5 @@ Route::group(['middleware' => ['admin']], function() {
     Route::get('/admin', 'Admin\AdminController@index')->name('admin');
     Route::apiResource('user_roles', 'Admin\UserRolesController')->only(['index', 'show', 'update', 'destroy']);
     Route::apiResource('roles', 'Admin\RolesController')->only(['index', 'store', 'destroy']);
+    Route::apiResource('standard_cards', 'Admin\StandardCardsController')->only(['index', 'store', 'update', 'destroy']);
 });

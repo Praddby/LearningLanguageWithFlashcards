@@ -37,7 +37,7 @@
             <a class="btn btn-primary" href="#" @click="showEditeRoleUser(user.id)">Изменить</a>
             <a href="#" type="button"
               data-toggle="modal"
-              data-target="#exampleModal"
+              data-target="#deleteModal"
               @click="modal = user" 
               :class="[(user.role) ? 'btn btn-danger' : 'disabled btn btn-secondary']"
               >Удалить</a>

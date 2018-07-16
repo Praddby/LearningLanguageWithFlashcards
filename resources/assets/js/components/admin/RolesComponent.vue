@@ -14,7 +14,7 @@
         <td>{{ index+1 }}</td>
         <td>{{ role.name }}</td>
         <td>
-          <a class="btn btn-danger" type="button" data-toggle="modal" @click="modal = role" data-target="#exampleModal" href="#">Удалить</a>
+          <a class="btn btn-danger" type="button" data-toggle="modal" @click="modal = role" data-target="#deleteModal" href="#">Удалить</a>
         </td>
       </tr>
       <tr>
