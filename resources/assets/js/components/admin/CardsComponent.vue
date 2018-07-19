@@ -72,7 +72,7 @@
         cardGroup: {},
         cards: [],
         slug: '',
-        isEditing: '',
+        isEditing: null,
         name_original: '',
         name_translation: '',
         errors: [],
@@ -98,10 +98,10 @@
         this.isEditing = id;
       },
       closeFormEditCard(){
-        this.isEditing = '';
+        this.isEditing = null;
       },
       setEdite(card){
-        this.isEditing = '';
+        this.isEditing = null;
         axios.put('/standard_cards/' + card.id, { card })
           .then(({data}) => {
           this.errors = [];
