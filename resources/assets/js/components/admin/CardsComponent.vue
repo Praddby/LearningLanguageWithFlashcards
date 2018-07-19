@@ -113,9 +113,9 @@
         
       },
       destroyCard: function(card) {
-        let idx = this.cards.indexOf(card);
         axios.delete('standard_cards/' + card.id)
           .then(({data}) => {
+            let idx = this.cards.indexOf(card);
             this.cards.splice(idx, 1);
           }).catch( (error) => {
             this.errors = [error.response.data.message];

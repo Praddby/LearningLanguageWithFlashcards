@@ -34,9 +34,6 @@ class CreateUserCardsTable extends Migration
      */
     public function down()
     {
-        Schema::table('user_cards', function (Blueprint $table) {
-            $table->dropForeign(['card_group_id', 'user_id']);
-        });
         Schema::dropIfExists('user_cards');
     }
 }

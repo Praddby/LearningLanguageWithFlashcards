@@ -55,9 +55,8 @@
     },
     methods: {
       add() {
-        axios.post('/standard_cards/', { cards: this.cards, name_category: this.name_category })
+        axios.post('/standard_cards', { cards: this.cards, name_category: this.name_category })
           .then(({data}) => {
-            console.log(data);
             this.$emit('addCardError', '');
             this.$emit('addCardGroup', data);
           }).catch( (error) => {

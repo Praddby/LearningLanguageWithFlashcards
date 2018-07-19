@@ -14,4 +14,5 @@ class StandardCards extends Model
     {
         return $this->belongsTo(CardGroup::class);
     }
+
 }

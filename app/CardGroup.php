@@ -15,4 +15,15 @@ class CardGroup extends Model
         return $this->hasMany(StandardCards::class);
     }
 
+    
+    public function scopeStandardCards($query)
+    {
+        return $query->where('is_standard', true);
+    }
+
+    public function scopeSetStandard($query)
+    {
+    	$query->is_standard = true;
+    }
+
 }

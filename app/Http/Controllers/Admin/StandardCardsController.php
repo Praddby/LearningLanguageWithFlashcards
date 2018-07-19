@@ -17,7 +17,7 @@ class StandardCardsController extends Controller
      */
     public function index()
     {
-        return CardGroup::with('standardCards')->where('is_standard', true)->get();
+        return CardGroup::with('standardCards')->standardCards()->get();
     }
 
     /**
@@ -31,7 +31,7 @@ class StandardCardsController extends Controller
         $data = $request->validated();
         
         $cardGroup = CardGroup::create($data);
-        $cardGroup->is_standard = true;
+        $cardGroup->setStandard();
         $cardGroup->save();
         
         foreach ($data['cards'] as $card) {
@@ -46,7 +46,7 @@ class StandardCardsController extends Controller
             $standardCards->save();
         }
 
-        return CardGroup::with('standardCards')->find($cardGroup->id);
+        return $cardGroup->fresh('standardCards');
     }
 
     /**

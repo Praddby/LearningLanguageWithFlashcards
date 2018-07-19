@@ -25,9 +25,11 @@ Route::post('/editWorld', 'CardsController@edit');
 
 Route::post('/addcards', 'CardsController@store')->name('formAddCards');
 
-Route::group(['middleware' => ['admin']], function() {
-    Route::get('/admin', 'Admin\AdminController@index')->name('admin');
-    Route::apiResource('user_roles', 'Admin\UserRolesController')->only(['index', 'show', 'update', 'destroy']);
-    Route::apiResource('roles', 'Admin\RolesController')->only(['index', 'store', 'destroy']);
-    Route::apiResource('standard_cards', 'Admin\StandardCardsController')->only(['index', 'store', 'update', 'destroy']);
+Route::middleware(['admin'])->group(function () {
+	Route::namespace('Admin')->group(function () {
+    	Route::get('/admin', 'AdminController@index')->name('admin');
+	    Route::apiResource('user_roles', 'UserRolesController')->only(['index', 'show', 'update', 'destroy']);
+	    Route::apiResource('roles', 'RolesController')->only(['index', 'store', 'destroy']);
+	    Route::apiResource('standard_cards', 'StandardCardsController')->only(['index', 'store', 'update', 'destroy']);
+	});
 });

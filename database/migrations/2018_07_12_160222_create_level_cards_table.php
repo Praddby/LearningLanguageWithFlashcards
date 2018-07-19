@@ -32,9 +32,6 @@ class CreateLevelCardsTable extends Migration
      */
     public function down()
     {
-        Schema::table('level_cards', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-        });
         Schema::dropIfExists('level_cards');
     }
 }

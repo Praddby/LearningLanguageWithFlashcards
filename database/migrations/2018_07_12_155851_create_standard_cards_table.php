@@ -32,9 +32,6 @@ class CreateStandardCardsTable extends Migration
      */
     public function down()
     {
-        Schema::table('standard_cards', function (Blueprint $table) {
-            $table->dropForeign(['card_group_id']);
-        });
         Schema::dropIfExists('standard_cards');
     }
 }
