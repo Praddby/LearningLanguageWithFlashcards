@@ -19,6 +19,12 @@ class UsersSeeder extends Seeder
             'role_id' => 1,
         ]);
 
+        User::insert([
+            'name' => 'User',
+            'email' => 'User@gmail.com',
+            'password' => bcrypt('secret'),
+        ]);
+
         for ($i=0; $i < 13; $i++) { 
             User::insert([
                 'name' => str_random(10),

@@ -155,7 +155,7 @@
         }
       },
       showUser(id){
-        axios.get('user_roles/' + 'ad')
+        axios.get('user_roles/' + id)
           .then(({data}) => {
             this.user_role = data;
             this.isUser = true;

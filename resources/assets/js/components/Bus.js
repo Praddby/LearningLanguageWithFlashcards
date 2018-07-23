@@ -2,12 +2,8 @@ import Vue from 'vue';
 
 export default new Vue({
   data: {
-    component: ''
+    component: '',
+    usercomponent: 'user-def-component'
   },
-  
-  methods: {
-    showComponent(component) {
-      this.component = component;
-    },
-  }
+
 });

@@ -17,7 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/getCards', 'CardsController@show');
 Route::post('/deleteWorld', 'CardsController@destroy');
@@ -25,6 +24,14 @@ Route::post('/editWorld', 'CardsController@edit');
 
 Route::post('/addcards', 'CardsController@store')->name('formAddCards');
 
+//users
+Route::middleware(['auth'])->group(function () {
+	Route::namespace('User')->group(function () {
+		Route::get('/home', 'UserController@index')->name('home');
+	});
+});
+
+//admin
 Route::middleware(['admin'])->group(function () {
 	Route::namespace('Admin')->group(function () {
     	Route::get('/admin', 'AdminController@index')->name('admin');

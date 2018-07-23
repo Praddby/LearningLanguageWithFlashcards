@@ -16,6 +16,10 @@ window.Vue = require('vue');
 
 Vue.component('cards-component', require('./components/CardsComponent.vue').default);
 
+//users
+Vue.component('user-nav-component', require('./components/users/NavComponent.vue').default);
+Vue.component('user-def-component', require('./components/users/DefaultComponent.vue').default);
+
 // admin
 Vue.component('nav-component', require('./components/admin/NavComponent.vue').default);
 Vue.component('users-component', require('./components/admin/UsersComponent.vue').default);
@@ -39,6 +43,9 @@ const app = new Vue({
   computed: {
     component: function () {
       return Bus.component;
+    },
+    usercomponent: function () {
+      return Bus.usercomponent;
     },
   },
 
