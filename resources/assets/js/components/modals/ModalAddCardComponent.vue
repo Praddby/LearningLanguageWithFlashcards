@@ -44,6 +44,7 @@
 <script>
 
   export default {
+    props:['url'],
 
     data(){
       return{
@@ -55,7 +56,7 @@
     },
     methods: {
       add() {
-        axios.post('/standard_cards', { cards: this.cards, name_category: this.name_category })
+        axios.post(this.url, { cards: this.cards, name_category: this.name_category })
           .then(({data}) => {
             this.$emit('addCardError', '');
             this.$emit('addCardGroup', data);

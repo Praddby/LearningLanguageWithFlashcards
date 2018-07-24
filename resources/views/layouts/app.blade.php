@@ -35,7 +35,11 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-
+               @auth
+                  <a href="" class="navbar-brand mx-5">Поиск</a>
+                  
+                  <a href="" class="navbar-brand">Создать карточку</a>
+               @endauth
             </ul>
 
             <!-- Right Side Of Navbar -->

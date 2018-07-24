@@ -36,6 +36,17 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function cardGroups()
+    {
+        return $this->hasMany(CardGroup::class);
+    }
+
+    public function userCards()
+    {
+        return $this->hasMany(UserCards::class);
+    }
+
+
     public function isAdmin()
     {
         if (is_object($this->role))

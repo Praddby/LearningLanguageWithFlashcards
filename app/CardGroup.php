@@ -15,6 +15,16 @@ class CardGroup extends Model
         return $this->hasMany(StandardCards::class);
     }
 
+    public function userCards()
+    {
+        return $this->hasMany(UserCards::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     
     public function scopeStandardCards($query)
     {
@@ -23,7 +33,12 @@ class CardGroup extends Model
 
     public function scopeSetStandard($query)
     {
-    	$query->is_standard = true;
+        $query->is_standard = true;
+    }
+
+    public function scopeSetUserId($query, $id)
+    {
+    	$query->user_id = $id;
     }
 
 }

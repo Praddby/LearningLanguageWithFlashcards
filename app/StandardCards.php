@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class StandardCards extends Model
 {
     protected $fillable = [
-        'name_original', 'name_translation', 'card_group_id'
+        'name_original', 'name_translation'
     ];
 
-    public function CardGroup()
+    public function cardGroup()
     {
         return $this->belongsTo(CardGroup::class);
     }

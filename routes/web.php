@@ -28,6 +28,7 @@ Route::post('/addcards', 'CardsController@store')->name('formAddCards');
 Route::middleware(['auth'])->group(function () {
 	Route::namespace('User')->group(function () {
 		Route::get('/home', 'UserController@index')->name('home');
+		Route::apiResource('user_cards', 'UserCardsController')->only(['index', 'store', 'update', 'destroy']);
 	});
 });
 

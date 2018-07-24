@@ -7,7 +7,8 @@
       {{ error }}
     </div>
     <modal-delete-component :modal="modal" @delete="destroyCard"></modal-delete-component>
-    <modal-add-cards-component @addCardError="function(error){errors = error}"
+    <modal-add-cards-component :url="'/standard_cards'"
+                               @addCardError="function(error){errors = error}"
                                @addCardGroup="function(data){cardGroup.push(data)}">
     </modal-add-cards-component>
     <div class="row">

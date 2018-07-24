@@ -17,7 +17,7 @@ class CreateUserCardsTable extends Migration
             $table->increments('id');
             $table->string('name_original');
             $table->string('name_translation');
-            $table->boolean('is_level_zero')->default(true);
+            $table->boolean('is_level_zero')->default(0);
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('card_group_id');
             $table->timestamps();
