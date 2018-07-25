@@ -61,8 +61,6 @@
       axios.get('/user_cards') 
         .then(({data}) => {
           this.cardGroup = data;
-        }).catch( (error) => {
-          this.errors =  error.response.data.errors;
         });
     },
     watch: {

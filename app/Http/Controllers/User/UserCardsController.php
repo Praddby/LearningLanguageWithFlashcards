@@ -51,11 +51,11 @@ class UserCardsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\UserCardsRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserCardsRequest $request, $id)
     {
         $cardGroup = CardGroup::find($id);
 
