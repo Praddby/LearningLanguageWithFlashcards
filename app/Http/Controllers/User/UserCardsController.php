@@ -34,7 +34,7 @@ class UserCardsController extends Controller
         $cardGroup->user()->associate(Auth::user());
         $cardGroup->save();
         
-        foreach ($data['cards'] as $card) {
+        foreach ($request['cards'] as $card) {
             if ( $card['name_original'] == '' || $card['name_translation'] == '') continue;
             $userCards = new UserCards([
                 'name_original'    => $card['name_original'],
@@ -57,7 +57,25 @@ class UserCardsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $cardGroup = CardGroup::find($id);
+
+        foreach ($request['cards'] as $card) {
+            if ( $card['name_original'] == '' || $card['name_translation'] == '') continue;
+            if ( isset($card['id']) ) {
+                UserCards::find($card['id'])->update([
+                    'name_original'    => $card['name_original'],
+                    'name_translation' => $card['name_translation']
+                ]);
+            } else {
+                $userCards = new UserCards([
+                    'name_original'    => $card['name_original'],
+                    'name_translation' => $card['name_translation'],
+                ]);
+                $userCards->cardGroup()->associate($cardGroup);
+                $userCards->user()->associate(Auth::user());
+                $userCards->save();
+            }
+        }
     }
 
     /**

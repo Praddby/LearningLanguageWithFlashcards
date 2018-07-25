@@ -24,7 +24,7 @@ class StandardCardsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name_category'            => 'filled|string|unique:card_groups,name_category',
+            'name_category'            => 'filled|string',
             'cards.*.name_original'    => 'filled|string|unique:standard_cards,name_original',
             'cards.*.name_translation' => 'filled|string',
             'card.name_original'       => 'filled|string|unique:standard_cards,name_original',

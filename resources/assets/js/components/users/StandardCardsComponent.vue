@@ -68,10 +68,10 @@
       }
     },
     created() {
-      axios.get('/user_cards') 
+      axios.get('/standard_cards') 
         .then(({data}) => {
           this.cardGroup = data;
-          this.cards = data[0].user_cards;
+          this.cards = data[0].standard_cards;
           this.slug = data[0].name_category;
         }).catch( (error) => {
           this.errors =  error.response.data.errors;
@@ -79,7 +79,7 @@
     },
     methods: {
       setCard(card) {
-          this.cards = card.user_cards;
+          this.cards = card.standard_cards;
           this.slug = card.name_category;
           this.userIndex = 0;
           this.font = false;

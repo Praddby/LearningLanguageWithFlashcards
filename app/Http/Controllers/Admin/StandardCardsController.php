@@ -32,7 +32,7 @@ class StandardCardsController extends Controller
         $cardGroup->setStandard();
         $cardGroup->save();
         
-        foreach ($data['cards'] as $card) {
+        foreach ($request['cards'] as $card) {
             if ( $card['name_original'] == '' || $card['name_translation'] == '') continue;
             $standardCards = new StandardCards([
                 'name_original'    => $card['name_original'],
