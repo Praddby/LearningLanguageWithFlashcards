@@ -36,9 +36,4 @@ class CardGroup extends Model
         $query->is_standard = true;
     }
 
-    public function scopeSetUserId($query, $id)
-    {
-    	$query->user_id = $id;
-    }
-
 }

@@ -30,9 +30,7 @@ class UserCardsController extends Controller
      */
     public function store(UserCardsRequest $request)
     {
-        $data = $request->validated();
-
-        $cardGroup = CardGroup::create($data);
+        $cardGroup = CardGroup::create($request->all());
         $cardGroup->user()->associate(Auth::user());
         $cardGroup->save();
         

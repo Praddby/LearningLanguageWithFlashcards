@@ -100,6 +100,6 @@
           this.cards.splice(idx, 1);
         });
       }
-    }        
+    }
   };
 </script>

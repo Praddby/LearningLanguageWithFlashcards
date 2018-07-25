@@ -58,6 +58,7 @@
       add() {
         axios.post(this.url, { cards: this.cards, name_category: this.name_category })
           .then(({data}) => {
+            console.log(data);
             this.$emit('addCardError', '');
             this.$emit('addCardGroup', data);
           }).catch( (error) => {

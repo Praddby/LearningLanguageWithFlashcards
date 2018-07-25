@@ -28,9 +28,7 @@ class StandardCardsController extends Controller
      */
     public function store(StandardCardsRequest $request)
     {
-        $data = $request->validated();
-        
-        $cardGroup = CardGroup::create($data);
+        $cardGroup = CardGroup::create($request->all());
         $cardGroup->setStandard();
         $cardGroup->save();
         

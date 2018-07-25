@@ -27,8 +27,6 @@ class UserCardsRequest extends FormRequest
             'name_category'            => 'filled|string|unique:card_groups,name_category',
             'cards.*.name_original'    => 'filled|string|unique:standard_cards,name_original',
             'cards.*.name_translation' => 'filled|string',
-            /*'card.name_original'       => 'filled|string|unique:standard_cards,name_original',
-            'card.name_translation'    => 'filled|string'*/
         ];
     }
 }
