@@ -8,7 +8,7 @@
         <div class="card card-default">
           <div class="card-body">
             <ul class="list-group list-group-flush">
-              <user-nav-component></user-nav-component>
+              <user-nav></user-nav>
             </ul>
           </div>
         </div>

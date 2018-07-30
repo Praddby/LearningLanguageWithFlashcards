@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCardsRequest;
+use Illuminate\Support\Facades\DB;
 use App\CardGroup;
 use App\UserCards;
 use App\User;
@@ -30,22 +31,29 @@ class UserCardsController extends Controller
      */
     public function store(UserCardsRequest $request)
     {
-        $cardGroup = CardGroup::create($request->all());
-        $cardGroup->user()->associate(Auth::user());
-        $cardGroup->save();
-        
-        foreach ($request['cards'] as $card) {
-            if ( $card['name_original'] == '' || $card['name_translation'] == '') continue;
-            $userCards = new UserCards([
-                'name_original'    => $card['name_original'],
-                'name_translation' => $card['name_translation'],
-            ]);
+        DB::transaction(function () use ($request) {
+            $cardGroup = CardGroup::create($request->all());
+            $cardGroup->user()->associate(Auth::user());
+            $cardGroup->save();
+            
+            foreach ($request['cards'] as $card) {
+                if ( $card['name_original'] == '' || $card['name_translation'] == '') continue;
 
-            $userCards->cardGroup()->associate($cardGroup);
-            $userCards->user()->associate(Auth::user());
+                $userCards = new UserCards([
+                    'name_original'    => $card['name_original'],
+                    'name_translation' => $card['name_translation'],
+                ]);
 
-            $userCards->save();
-        }
+                $userCards->cardGroup()->associate($cardGroup);
+                $userCards->user()->associate(Auth::user());
+                $userCards->save();
+            }
+
+            if ( !isset($userCards) ) {
+                throw new \Exception("Вы забыли добавить слова в карточку");
+            }
+        });
+
     }
 
     /**
@@ -57,25 +65,29 @@ class UserCardsController extends Controller
      */
     public function update(UserCardsRequest $request, $id)
     {
-        $cardGroup = CardGroup::find($id);
-
-        foreach ($request['cards'] as $card) {
-            if ( $card['name_original'] == '' || $card['name_translation'] == '') continue;
-            if ( isset($card['id']) ) {
-                UserCards::find($card['id'])->update([
-                    'name_original'    => $card['name_original'],
-                    'name_translation' => $card['name_translation']
-                ]);
-            } else {
-                $userCards = new UserCards([
-                    'name_original'    => $card['name_original'],
-                    'name_translation' => $card['name_translation'],
-                ]);
-                $userCards->cardGroup()->associate($cardGroup);
-                $userCards->user()->associate(Auth::user());
-                $userCards->save();
+        DB::transaction(function () use ($request, $id) {
+            $cardGroup = CardGroup::find($id);
+            foreach ($request['cards'] as $card) {
+                if ( !isset($card['id']) && ($card['name_original'] == '' || $card['name_translation'] == '') ) {
+                    continue;
+                } else if ( $card['name_original'] == '' || $card['name_translation'] == '') {
+                    $this->destroy($card['id']);
+                } else if ( isset($card['id']) ) {
+                    UserCards::find($card['id'])->update([
+                        'name_original'    => $card['name_original'],
+                        'name_translation' => $card['name_translation']
+                    ]);
+                } else {
+                    $userCards = new UserCards([
+                        'name_original'    => $card['name_original'],
+                        'name_translation' => $card['name_translation'],
+                    ]);
+                    $userCards->cardGroup()->associate($cardGroup);
+                    $userCards->user()->associate(Auth::user());
+                    $userCards->save();
+                }
             }
-        }
+        });
     }
 
     /**
@@ -86,6 +98,6 @@ class UserCardsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        UserCards::destroy($id);
     }
 }

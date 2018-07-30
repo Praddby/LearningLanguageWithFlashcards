@@ -6,11 +6,11 @@
     <div class="alert alert-danger" role="alert" v-if="errors" v-for="error in errors">
       {{ error }}
     </div>
-    <modal-delete-component :modal="modal" @delete="destroyCard"></modal-delete-component>
-    <modal-add-cards-component :url="'/standard_cards'"
-                               @addCardError="function(error){errors = error}"
-                               @addCardGroup="function(data){cardGroup.push(data)}">
-    </modal-add-cards-component>
+    <modal-delete :modal="modal" @delete="destroyCard"></modal-delete>
+    <modal-add-cards :url="'/standard_cards'"
+                     @addCardError="addCardError"
+                     @addCardGroup="addCardGroup">
+    </modal-add-cards>
     <div class="row">
       <div class="col-md-4">
         <div class="card card-default">
@@ -107,11 +107,15 @@
           .then(({data}) => {
           this.errors = [];
         }).catch( (error) => {
-          this.errors =  error.response.data.errors;
+           this.errors = error.response.data.errors;
         });
       },
-      addCard: function (argument) {
-        
+      addCardGroup: function (data) {
+        this.cardGroup.push(data);
+        this.errors = [];
+      },
+      addCardError: function (error) {
+        this.errors = error;
       },
       destroyCard: function(card) {
         axios.delete('standard_cards/' + card.id)

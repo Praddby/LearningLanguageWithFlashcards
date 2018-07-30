@@ -23,10 +23,10 @@
               </div>
             </div>
             
-            <input-card-component :index="index"
+            <input-card :index="index"
                                   :cards="cards"
                                   v-for="(card, index) in cards" :key="card.id">
-            </input-card-component>
+            </input-card>
              
           </form>
         </div>
@@ -76,11 +76,15 @@
         axios.put('/user_cards/' + this.selectCard.id,
           { cards: this.cards, name_category: this.selectCard.name_category })
           .then(({data}) => {
-            console.log(data);
-            this.$emit('addCardError', null);
-            this.$emit('addCardGroup', true);
+            this.$emit('addCardGroup', 'Редактирование выполнено успешно');
           }).catch( (error) => {
-            this.$emit('addCardError', error.response.data.errors);
+            let errors;
+            if ( error.response.status == 500 ) {
+              errors = ['Произошла ошибка, повторите попытку чуть позже.'];
+            } else {
+              errors = error.response.data.errors;
+            }
+            this.$emit('addCardError', errors);
           });
       },
       addInput() {

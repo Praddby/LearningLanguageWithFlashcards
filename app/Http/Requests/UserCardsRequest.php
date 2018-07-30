@@ -25,8 +25,8 @@ class UserCardsRequest extends FormRequest
     {
         return [
             'name_category'            => 'filled|string',
-            'cards.*.name_original'    => 'filled|string|unique:standard_cards,name_original',
-            'cards.*.name_translation' => 'filled|string',
+            'cards.*.name_original'    => 'nullable|string|unique:standard_cards,name_original',
+            'cards.*.name_translation' => 'nullable|string',
         ];
     }
 }

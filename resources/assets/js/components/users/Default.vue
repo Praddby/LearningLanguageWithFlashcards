@@ -1,17 +1,17 @@
 <template>
   <div>
-    <modal-add-cards-component :url="'/user_cards'"
-                               @addCardError="function(error){errors = error}"
-                               @addCardGroup="function(data){success = true}">
-    </modal-add-cards-component>
-    <editing-card-component @addCardError="function(error){errors = error}"
-                             @addCardGroup="function(data){success = true}">
-    </editing-card-component>
+    <modal-add-cards :url="'/user_cards'"
+                     @addCardError="addCardErrors"
+                     @addCardGroup="addCardSuccess">
+    </modal-add-cards>
+    <modal-editing-card @addCardError="addCardErrors"
+                        @addCardGroup="addCardSuccess">
+    </modal-editing-card>
     <div class="alert alert-danger" role="alert" v-if="errors" v-for="error in errors">
       {{ error.toString() }}
     </div>
     <div class="alert alert-success" role="alert" v-if="success">
-      <span>Редактирование выполнено успешно</span>
+      <span>{{ success }}</span>
     </div>
     <div class="row">
       <div class="card border-primary mb-3 mr-3" style="max-width: 18rem;">
@@ -52,9 +52,18 @@
   export default {
     data(){
       return{
-        success: false,
-        errors: null,
+        success: null,
+        errors: [],
       }
+    },
+    methods: {
+      addCardSuccess: function (success){
+        this.success = success;
+        this.errors = null;
+      },
+      addCardErrors: function(errors) {
+        this.errors = errors;
+      },
     },
        
   };

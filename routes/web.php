@@ -18,16 +18,10 @@ Route::get('/', function () {
 Auth::routes();
 
 
-Route::get('/getCards', 'CardsController@show');
-Route::post('/deleteWorld', 'CardsController@destroy');
-Route::post('/editWorld', 'CardsController@edit');
-
-Route::post('/addcards', 'CardsController@store')->name('formAddCards');
-
 //users
 Route::middleware(['auth'])->group(function () {
     Route::namespace('User')->group(function () {
-        Route::get('/home', 'UserController@index')->name('home');
+        Route::get('home', 'UserController@index')->name('home');
         Route::apiResource('user_cards', 'UserCardsController')->only(['index', 'store', 'update', 'destroy']);
     });
 });
@@ -35,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
 //admin
 Route::middleware(['admin'])->group(function () {
     Route::namespace('Admin')->group(function () {
-        Route::get('/admin', 'AdminController@index')->name('admin');
+        Route::get('admin', 'AdminController@index')->name('admin');
         Route::apiResource('user_roles', 'UserRolesController')->only(['index', 'show', 'update', 'destroy']);
         Route::apiResource('roles', 'RolesController')->only(['index', 'store', 'destroy']);
         Route::apiResource('standard_cards', 'StandardCardsController')->only(['index', 'store', 'update', 'destroy']);

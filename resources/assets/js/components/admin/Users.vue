@@ -3,7 +3,7 @@
     <div class="alert alert-danger" role="alert" v-if="errors" v-for="error in errors">
       {{ error }}
     </div>
-    <modal-delete-component :modal="modal" @delete="destroyUserRole"></modal-delete-component>
+    <modal-delete :modal="modal" @delete="destroyUserRole"></modal-delete>
     <div class="table" v-show="!isUser">
       <table class="table table-bordered">
         <tr>

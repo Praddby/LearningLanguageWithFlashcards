@@ -25,7 +25,6 @@ class CardGroup extends Model
         return $this->belongsTo(User::class);
     }
 
-    
     public function scopeStandardCards($query)
     {
         return $query->where('is_standard', true);
@@ -33,7 +32,7 @@ class CardGroup extends Model
 
     public function scopeSetStandard($query)
     {
-        $query->is_standard = true;
+        return $query->update(['is_standard' => true]);
     }
 
 }

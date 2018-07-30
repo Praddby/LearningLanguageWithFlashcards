@@ -14,25 +14,23 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('cards-component', require('./components/CardsComponent.vue').default);
-
 //users
-Vue.component('user-nav-component', require('./components/users/NavComponent.vue').default);
-Vue.component('user-def-component', require('./components/users/DefaultComponent.vue').default);
-Vue.component('user-cards-component', require('./components/users/UserCardsComponent.vue').default);
-Vue.component('standard-cards-component', require('./components/users/StandardCardsComponent.vue').default);
+Vue.component('user-nav', require('./components/users/Nav.vue').default);
+Vue.component('user-def', require('./components/users/Default.vue').default);
+Vue.component('user-cards', require('./components/users/UserCards.vue').default);
+Vue.component('standard-cards', require('./components/users/StandardCards.vue').default);
 
 // admin
-Vue.component('nav-component', require('./components/admin/NavComponent.vue').default);
-Vue.component('users-component', require('./components/admin/UsersComponent.vue').default);
-Vue.component('roles-component', require('./components/admin/RolesComponent.vue').default);
-Vue.component('admin-cards-component', require('./components/admin/CardsComponent.vue').default);
+Vue.component('admin-nav', require('./components/admin/Nav.vue').default);
+Vue.component('users', require('./components/admin/Users.vue').default);
+Vue.component('roles', require('./components/admin/Roles.vue').default);
+Vue.component('admin-cards', require('./components/admin/Cards.vue').default);
 
 // modals
-Vue.component('modal-delete-component', require('./components/modals/ModalDeleteComponent.vue').default);
-Vue.component('modal-add-cards-component', require('./components/modals/ModalAddCardComponent.vue').default);
-Vue.component('input-card-component', require('./components/modals/InputForModalAddCardComponent.vue').default);
-Vue.component('editing-card-component', require('./components/modals/ModalEditingCardsComponent.vue').default);
+Vue.component('modal-delete', require('./components/modals/ModalDelete.vue').default);
+Vue.component('modal-add-cards', require('./components/modals/ModalAddCard.vue').default);
+Vue.component('input-card', require('./components/modals/InputForModalAddCard.vue').default);
+Vue.component('modal-editing-card', require('./components/modals/ModalEditingCards.vue').default);
 
 import Bus from './components/Bus.js';
 

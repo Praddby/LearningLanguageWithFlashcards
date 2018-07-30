@@ -18,10 +18,10 @@
               </div>
             </div>
             
-            <input-card-component :index="index"
+            <input-card :index="index"
                                   :cards="cards"
                                   v-for="(card, index) in cards" :key="card.id">
-            </input-card-component>
+            </input-card>
              
           </form>
         </div>
@@ -58,11 +58,18 @@
       add() {
         axios.post(this.url, { cards: this.cards, name_category: this.name_category })
           .then(({data}) => {
-            console.log(data);
-            this.$emit('addCardError', '');
-            this.$emit('addCardGroup', data);
+            if ( this.url == "/standard_cards" )
+              this.$emit('addCardGroup', data);
+            else
+              this.$emit('addCardGroup', 'Добавлено успешно!');
           }).catch( (error) => {
-            this.$emit('addCardError', error.response.data.errors);
+            let errors;
+            if ( error.response.status == 500 ) {
+              errors = ['Произошла ошибка, повторите попытку чуть позже.'];
+            } else {
+              errors = error.response.data.errors;
+            }
+            this.$emit('addCardError', errors);
           });
       },
       addInput() {

@@ -1,16 +1,16 @@
 <template>
   <div>
     <a href="#" class="list-group-item list-group-item-action"
-                @click="switchComponents('admin-cards-component')"
-                :class="{ active: (component == 'admin-cards-component') }">Карточки</a>
+                @click.prevent="switchComponents('admin-cards')"
+                :class="{ active: (component == 'admin-cards') }">Карточки</a>
 
     <a href="#" class="list-group-item list-group-item-action"
-                @click="switchComponents('users-component')"
-                :class="{ active: (component == 'users-component') }">Пользователи</a>
+                @click.prevent="switchComponents('users')"
+                :class="{ active: (component == 'users') }">Пользователи</a>
 
     <a href="#" class="list-group-item list-group-item-action"
-                @click="switchComponents('roles-component')"
-                :class="{ active: (component == 'roles-component') }">Роли</a>
+                @click.prevent="switchComponents('roles')"
+                :class="{ active: (component == 'roles') }">Роли</a>
   </div>
 </template>
 
