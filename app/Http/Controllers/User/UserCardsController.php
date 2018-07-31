@@ -33,8 +33,7 @@ class UserCardsController extends Controller
     {
         DB::transaction(function () use ($request) {
             $cardGroup = CardGroup::create($request->all());
-            $cardGroup->user()->associate(Auth::user());
-            $cardGroup->save();
+            $cardGroup->user()->associate(Auth::user())->save();
             
             foreach ($request['cards'] as $card) {
                 if ( $card['name_original'] == '' || $card['name_translation'] == '') continue;
@@ -44,9 +43,8 @@ class UserCardsController extends Controller
                     'name_translation' => $card['name_translation'],
                 ]);
 
-                $userCards->cardGroup()->associate($cardGroup);
-                $userCards->user()->associate(Auth::user());
-                $userCards->save();
+                $userCards->cardGroup()->associate($cardGroup)
+                          ->user()->associate(Auth::user())->save();
             }
 
             if ( !isset($userCards) ) {
@@ -82,9 +80,8 @@ class UserCardsController extends Controller
                         'name_original'    => $card['name_original'],
                         'name_translation' => $card['name_translation'],
                     ]);
-                    $userCards->cardGroup()->associate($cardGroup);
-                    $userCards->user()->associate(Auth::user());
-                    $userCards->save();
+                    $userCards->cardGroup()->associate($cardGroup)
+                              ->user()->associate(Auth::user())->save();
                 }
             }
         });

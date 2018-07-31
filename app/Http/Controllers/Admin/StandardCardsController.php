@@ -31,15 +31,14 @@ class StandardCardsController extends Controller
     {
         $cardGroup = DB::transaction(function () use ($request) {
             $cardGroup = CardGroup::create($request->all());
-            $cardGroup->setStandard();
+            $cardGroup->setStandard()->save();
             foreach ($request['cards'] as $card) {
                 if ( $card['name_original'] == '' || $card['name_translation'] == '') continue;
                 $standardCards = new StandardCards([
                     'name_original'    => $card['name_original'],
                     'name_translation' => $card['name_translation'],
                 ]);
-                $standardCards->cardGroup()->associate($cardGroup);
-                $standardCards->save();
+                $standardCards->cardGroup()->associate($cardGroup)->save();
 
                 if ( !isset($standardCards) ) {
                     throw new \Exception("Вы забыли добавить слова в карточку");

@@ -25,10 +25,10 @@ class StandardCardsRequest extends FormRequest
     {
         return [
             'name_category'            => 'filled|string',
-            'cards.*.name_original'    => 'filled|string|unique:standard_cards,name_original',
-            'cards.*.name_translation' => 'filled|string',
-            'card.name_original'       => 'filled|string|unique:standard_cards,name_original',
-            'card.name_translation'    => 'filled|string'
+            'cards.*.name_original'    => 'nullable|string',
+            'cards.*.name_translation' => 'nullable|string',
+            'card.name_original'       => 'nullable|string',
+            'card.name_translation'    => 'nullable|string'
         ];
     }
 }
