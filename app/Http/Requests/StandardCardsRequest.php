@@ -27,8 +27,8 @@ class StandardCardsRequest extends FormRequest
             'name_category'            => 'filled|string',
             'cards.*.name_original'    => 'nullable|string',
             'cards.*.name_translation' => 'nullable|string',
-            'card.name_original'       => 'nullable|string',
-            'card.name_translation'    => 'nullable|string'
+            'card.name_original'       => 'filled|string',
+            'card.name_translation'    => 'filled|string'
         ];
     }
 }

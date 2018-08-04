@@ -48,6 +48,8 @@
 
 <script>
 
+  import Api from '../ApiFunctions.js';
+
   export default {
 
     data(){
@@ -58,10 +60,7 @@
       }
     },
     created() {
-      axios.get('/user_cards') 
-        .then(({data}) => {
-          this.cardGroup = data;
-        });
+      Api.get('/user_cards', this.setData);
     },
     watch: {
       selectCard: function () {
@@ -69,15 +68,19 @@
       }
     },
     methods: {
+      setData(data){
+        this.cardGroup = data;
+      },
       getCards(card){
         this.cards = card.user_cards;
       },
       editer() {
-        axios.put('/user_cards/' + this.selectCard.id,
-          { cards: this.cards, name_category: this.selectCard.name_category })
-          .then(({data}) => {
+        Api.put('/user_cards/' + this.selectCard.id,
+          { cards: this.cards, name_category: this.selectCard.name_category },
+          (data) => {
             this.$emit('addCardGroup', 'Редактирование выполнено успешно');
-          }).catch( (error) => {
+          },
+          (error) => {
             let errors;
             if ( error.response.status == 500 ) {
               errors = ['Произошла ошибка, повторите попытку чуть позже.'];
@@ -85,7 +88,8 @@
               errors = error.response.data.errors;
             }
             this.$emit('addCardError', errors);
-          });
+          }
+        );
       },
       addInput() {
         this.cards.push({name_original: '', name_translation: ''});

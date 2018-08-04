@@ -55,6 +55,7 @@
 
 <script>
 
+  import Api from '../ApiFunctions.js';
 
   export default {
 
@@ -68,16 +69,17 @@
       }
     },
     created() {
-      axios.get('/standard_cards') 
-        .then(({data}) => {
-          this.cardGroup = data;
-          this.cards = data[0].standard_cards;
-          this.slug = data[0].name_category;
-        }).catch( (error) => {
-          this.errors =  error.response.data.errors;
-        });
+      Api.get('/standard_cards', this.setData, this.setError);
     },
     methods: {
+      setData(data){
+        this.cardGroup = data;
+        this.cards = data[0].standard_cards;
+        this.slug = data[0].name_category;
+      },
+      setError(errors) {
+        this.errors =  error.response.data.errors;
+      },
       setCard(card) {
           this.cards = card.standard_cards;
           this.slug = card.name_category;

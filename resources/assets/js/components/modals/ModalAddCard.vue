@@ -43,6 +43,8 @@
 
 <script>
 
+  import Api from '../ApiFunctions.js';
+
   export default {
     props:['url'],
 
@@ -56,13 +58,14 @@
     },
     methods: {
       add() {
-        axios.post(this.url, { cards: this.cards, name_category: this.name_category })
-          .then(({data}) => {
+        Api.post(this.url, { cards: this.cards, name_category: this.name_category },
+          (data) => {
             if ( this.url == "/standard_cards" )
               this.$emit('addCardGroup', data);
             else
               this.$emit('addCardGroup', 'Добавлено успешно!');
-          }).catch( (error) => {
+          },
+          (error) => {
             let errors;
             if ( error.response.status == 500 ) {
               errors = ['Произошла ошибка, повторите попытку чуть позже.'];
@@ -70,7 +73,8 @@
               errors = error.response.data.errors;
             }
             this.$emit('addCardError', errors);
-          });
+          }
+        );
       },
       addInput() {
         this.cards.push({name_original: '', name_translation: ''});

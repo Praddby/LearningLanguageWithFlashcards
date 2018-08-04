@@ -65,6 +65,7 @@
 
 <script>
   
+  import Api from '../ApiFunctions.js';
 
   export default {
 
@@ -81,16 +82,17 @@
       }
     },
     created() {
-      axios.get('/standard_cards') 
-        .then(({data}) => {
-          this.cardGroup = data;
-          this.cards = data[0].standard_cards;
-          this.slug = data[0].name_category;
-        }).catch( (error) => {
-          this.errors =  error.response.data.errors;
-        });
+      Api.get('/standard_cards', this.setData, this.setError);
     },
     methods: {
+      setData(data){
+        this.cardGroup = data;
+        this.cards = data[0].standard_cards;
+        this.slug = data[0].name_category;
+      },
+      setError(errors) {
+        this.errors =  error.response.data.errors;
+      },
       setCard(card) {
           this.cards = card.standard_cards;
           this.slug = card.name_category;
@@ -102,13 +104,16 @@
         this.isEditing = null;
       },
       setEdite(card){
-        this.isEditing = null;
-        axios.put('/standard_cards/' + card.id, { card })
-          .then(({data}) => {
-          this.errors = [];
-        }).catch( (error) => {
-           this.errors = error.response.data.errors;
-        });
+        Api.put('/standard_cards/' + card.id, { card },
+          (data) => {
+            console.log('success');
+            this.isEditing = null;
+            this.errors = [];
+          },
+          (error) => {
+            this.errors = error.response.data.errors;
+          }
+        );
       },
       addCardGroup: function (data) {
         this.cardGroup.push(data);
@@ -118,13 +123,15 @@
         this.errors = error;
       },
       destroyCard: function(card) {
-        axios.delete('standard_cards/' + card.id)
-          .then(({data}) => {
+        Api.delete('standard_cards/' + card.id,
+          (data) => {
             let idx = this.cards.indexOf(card);
             this.cards.splice(idx, 1);
-          }).catch( (error) => {
+          },
+          (error) => {
             this.errors = [error.response.data.message];
-          });
+          }
+        );
       },
     }        
   };

@@ -103,6 +103,7 @@
 <script>
 
   import Bus from '../Bus.js';
+  import Api from '../ApiFunctions.js';
 
   export default {
     data(){
@@ -119,49 +120,39 @@
       }
     },
     created() {
-      axios.get('/user_roles')
-        .then(({data}) => {
-          this.pagination = data.data;
-          this.users = data.data.data;
-          this.roles = data.role;
-        });    
+      Api.get('/user_roles', this.setData);
     },
     methods: {
+      setData(data){
+        this.pagination = data.data;
+        this.users = data.data.data;
+        this.roles = data.role;
+      },
       nextPageUrl() {
         if (this.pagination.current_page != this.pagination.last_page) {
-          axios.get(this.pagination.next_page_url)
-            .then(({data}) => {
-              this.pagination = data.data;
-              this.users = data.data.data;
-            });
+          Api.get(this.pagination.next_page_url, this.setData);
         }
       },
       prevPageUrl() {
         if (this.pagination.current_page != 1) {
-          axios.get(this.pagination.prev_page_url)
-            .then(({data}) => {
-              this.pagination = data.data;
-              this.users = data.data.data;
-            });
+          Api.get(this.pagination.prev_page_url, this.setData);
         }
       },
       PageUrl(pageNo) {
         if (this.pagination.current_page != pageNo) {
-          axios.get(this.pagination.path+'?page='+pageNo)
-            .then(({data}) => {
-              this.pagination = data.data;
-              this.users = data.data.data;
-            });
+          Api.get(this.pagination.path+'?page='+pageNo, this.setData);
         }
       },
       showUser(id){
-        axios.get('user_roles/' + id)
-          .then(({data}) => {
+        Api.show( 'user_roles/' + id,
+          (data) => {
             this.user_role = data;
             this.isUser = true;
-          }).catch(function (error) {
-            alert(error.message);
-          });
+          },
+          (error) => {
+            this.errors = [error.response.data.message];
+          }
+        );
       },
       showTableUsers(){
         this.isUser = false;
@@ -173,21 +164,25 @@
           this.showEdite = id;
       },
       destroyUserRole(user){
-        axios.delete('user_roles/' + user.id)
-          .then(({data}) => {
+        Api.delete('user_roles/' + user.id,
+          (data) => {
             user.role = null;
-          }).catch( (error) => {
+          },
+          (error) => {
             this.errors = [error.response.data.message];
-          });
+          }
+        );
       },
       changeRole(user){
-        axios.put('user_roles/' + user.id, { roleId: this.selectedRole.id } )
-          .then(({data}) => {
+        Api.put('user_roles/' + user.id, { roleId: this.selectedRole.id },
+          (data) => {
             user.role = this.selectedRole;
             this.showEdite = false;
-          }).catch( (error) => {
+          },
+          (error) => {
             this.errors =  error.response.data.errors.roleId;
-          });
+          }
+        );
       },
     }        
   };

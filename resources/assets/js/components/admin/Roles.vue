@@ -52,6 +52,8 @@
 
 <script>
 
+  import Api from '../ApiFunctions.js';
+
   export default {
     data(){
       return{
@@ -63,57 +65,49 @@
       }
     },
     created() {
-      axios.get('/roles')
-        .then(({data}) => {
-          this.pagination = data;
-          this.roles = data.data;
-        });    
+      Api.get('/roles', this.setData);    
     },
     methods: {
+      setData(data){
+        this.pagination = data;
+        this.roles = data.data;
+      },
       nextPageUrl() {
         if (this.pagination.current_page != this.pagination.last_page) {
-          axios.get(this.pagination.next_page_url)
-            .then(({data}) => {
-              this.pagination = data;
-              this.roles = data.data;
-            });
+          Api.get(this.pagination.next_page_url, this.setData);
         }
       },
       prevPageUrl() {
         if (this.pagination.current_page != 1) {
-          axios.get(this.pagination.prev_page_url)
-            .then(({data}) => {
-              this.pagination = data;
-              this.roles = data.data;
-            });
+          Api.get(this.pagination.prev_page_url, this.setData);
         }
       },
       PageUrl(pageNo) {
         if (this.pagination.current_page != pageNo) {
-          axios.get(this.pagination.path+'?page='+pageNo)
-            .then(({data}) => {
-              this.pagination = data;
-              this.roles = data.data;
-            });
+          Api.get(this.pagination.path+'?page='+pageNo, this.setData);
         }
       },
       addRole(){
-        axios.post('/roles', {role: this.role})
-          .then( ({data}) => {
+        Api.post('/roles', {role: this.role},
+          (data) => {
             this.roles.push(data);
             this.role = '';
-          }).catch( (error) => {
+          },
+          (error) => {
             this.errors =  error.response.data.errors.role;
-          });
+          }
+        );
       },
       destroyRole: function(role) {
-        let idx = this.roles.indexOf(role);
-        axios.delete('roles/' + role.id)
-          .then(({data}) => {
+        Api.delete('roles/' + role.id,
+          (data) => {
+            let idx = this.roles.indexOf(role);
             this.roles.splice(idx, 1);
-          }).catch( (error) => {
+          },
+          (error) => {
             this.errors = [error.response.data.message];
-          });
+          }
+        );
       }
     }        
   };
