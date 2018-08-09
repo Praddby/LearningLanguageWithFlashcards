@@ -11,7 +11,7 @@
         <th width="300px">Действия</th>
       </tr>
       <tr v-for="(role, index) in roles" :key="role.id">
-        <td>{{ index+1 }}</td>
+        <td>{{ (pagination.current_page - 1) * 5 + index + 1 }}</td>
         <td>{{ role.name }}</td>
         <td>
           <a class="btn btn-danger" type="button" data-toggle="modal" @click="modal = role" data-target="#deleteModal" href="#">Удалить</a>
@@ -65,49 +65,67 @@
       }
     },
     created() {
-      Api.get('/roles', this.setData);    
-    },
-    methods: {
-      setData(data){
+      Api.getRole().then(data => {
         this.pagination = data;
         this.roles = data.data;
-      },
+      });
+    },
+    methods: {
       nextPageUrl() {
         if (this.pagination.current_page != this.pagination.last_page) {
-          Api.get(this.pagination.next_page_url, this.setData);
+          let params = {
+            path: this.pagination
+          };
+          Api.nextPageUrl(params).then(data => {
+            this.pagination = data;
+            this.roles = data.data;
+          });
         }
       },
       prevPageUrl() {
         if (this.pagination.current_page != 1) {
-          Api.get(this.pagination.prev_page_url, this.setData);
+          let params = {
+            path: this.pagination
+          };
+          Api.prevPageUrl(params).then(data => {
+            this.pagination = data;
+            this.roles = data.data;
+          });
         }
       },
       PageUrl(pageNo) {
         if (this.pagination.current_page != pageNo) {
-          Api.get(this.pagination.path+'?page='+pageNo, this.setData);
+          let params = {
+            path: this.pagination.path,
+            pageNo
+          };
+          Api.PageUrl(params).then(data => {
+            this.pagination = data;
+            this.roles = data.data;
+          });
         }
       },
       addRole(){
-        Api.post('/roles', {role: this.role},
-          (data) => {
+        let params = {
+          role: this.role
+        };
+
+        Api.addRole(params)
+          .then( (data) => {
             this.roles.push(data);
             this.role = '';
-          },
-          (error) => {
+          }).catch( (error) => {
             this.errors =  error.response.data.errors.role;
-          }
-        );
+          });
       },
       destroyRole: function(role) {
-        Api.delete('roles/' + role.id,
-          (data) => {
+        Api.deleteRole(role.id)
+          .then( (data) => {
             let idx = this.roles.indexOf(role);
             this.roles.splice(idx, 1);
-          },
-          (error) => {
+          }).catch( (error) => {
             this.errors = [error.response.data.message];
-          }
-        );
+          });
       }
     }        
   };

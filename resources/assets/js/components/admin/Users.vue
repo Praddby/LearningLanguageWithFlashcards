@@ -14,7 +14,7 @@
           <th width="300px">Действия</th>
         </tr>
         <tr v-for="(user, index) in users" :key="user.id">
-          <td>{{ index+1 }}</td>
+          <td>{{ (pagination.current_page - 1) * 5 + index + 1 }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
           <td v-if="(showEdite && user.id == showEdite)">
@@ -120,39 +120,55 @@
       }
     },
     created() {
-      Api.get('/user_roles', this.setData);
-    },
-    methods: {
-      setData(data){
+      Api.getUsers().then(data => {
         this.pagination = data.data;
         this.users = data.data.data;
         this.roles = data.role;
-      },
+      });
+    },
+    methods: {
       nextPageUrl() {
         if (this.pagination.current_page != this.pagination.last_page) {
-          Api.get(this.pagination.next_page_url, this.setData);
+          let params = {
+            path: this.pagination
+          };
+          Api.nextPageUrl(params).then(data => {
+            this.pagination = data.data;
+            this.users = data.data.data;
+          });
         }
       },
       prevPageUrl() {
         if (this.pagination.current_page != 1) {
-          Api.get(this.pagination.prev_page_url, this.setData);
+          let params = {
+            path: this.pagination
+          };
+          Api.prevPageUrl(params).then(data => {
+            this.pagination = data.data;
+            this.users = data.data.data;
+          });
         }
       },
       PageUrl(pageNo) {
         if (this.pagination.current_page != pageNo) {
-          Api.get(this.pagination.path+'?page='+pageNo, this.setData);
+          let params = {
+            path: this.pagination.path,
+            pageNo
+          };
+          Api.PageUrl(params).then(data => {
+            this.pagination = data.data;
+            this.users = data.data.data;
+          });
         }
       },
       showUser(id){
-        Api.show( 'user_roles/' + id,
-          (data) => {
+        Api.showUser(id)
+          .then( (data) => {
             this.user_role = data;
             this.isUser = true;
-          },
-          (error) => {
+          }).catch( (error) => {
             this.errors = [error.response.data.message];
-          }
-        );
+          });
       },
       showTableUsers(){
         this.isUser = false;
@@ -164,25 +180,26 @@
           this.showEdite = id;
       },
       destroyUserRole(user){
-        Api.delete('user_roles/' + user.id,
-          (data) => {
+        Api.deleteUserRole(user.id)
+          .then( (data) => {
             user.role = null;
-          },
-          (error) => {
+          }).catch( (error) => {
             this.errors = [error.response.data.message];
-          }
-        );
+          });
       },
       changeRole(user){
-        Api.put('user_roles/' + user.id, { roleId: this.selectedRole.id },
-          (data) => {
+        let params = {
+          roleId: this.selectedRole.id,
+          userId: user.id
+        };
+
+        Api.changeRole(params)
+          .then( (data) => {
             user.role = this.selectedRole;
             this.showEdite = false;
-          },
-          (error) => {
+          }).catch( (error) => {
             this.errors =  error.response.data.errors.roleId;
-          }
-        );
+          });
       },
     }        
   };

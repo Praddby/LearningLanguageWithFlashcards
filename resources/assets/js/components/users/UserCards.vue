@@ -69,17 +69,14 @@
       }
     },
     created() {
-      Api.get('/user_cards', this.setData, this.setError);
+      Api.getUserCards()
+        .then(data => {
+          this.cardGroup = data;
+          this.cards = data[0].user_cards;
+          this.slug = data[0].name_category;
+        });
     },
     methods: {
-      setData(data){
-        this.cardGroup = data;
-        this.cards = data[0].user_cards;
-        this.slug = data[0].name_category;
-      },
-      setError(error){
-        this.errors =  error.response.data.errors;
-      },
       setCard(card) {
           this.cards = card.user_cards;
           this.slug = card.name_category;

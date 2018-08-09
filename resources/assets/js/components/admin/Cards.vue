@@ -82,20 +82,21 @@
       }
     },
     created() {
-      Api.get('/standard_cards', this.setData, this.setError);
+      Api.getStandardCards()
+        .then(data => {
+          this.cardGroup = data;
+          this.cards = data[0].standard_cards;
+          this.slug = data[0].name_category;
+        })
+        .catch(error => {
+          this.errors = error.response.data.errors;
+        });
     },
     methods: {
-      setData(data){
-        this.cardGroup = data;
-        this.cards = data[0].standard_cards;
-        this.slug = data[0].name_category;
-      },
-      setError(errors) {
-        this.errors =  error.response.data.errors;
-      },
       setCard(card) {
           this.cards = card.standard_cards;
           this.slug = card.name_category;
+          this.isEditing = null;
       },
       showFormEditCard(id){
         this.isEditing = id;
@@ -104,16 +105,17 @@
         this.isEditing = null;
       },
       setEdite(card){
-        Api.put('/standard_cards/' + card.id, { card },
-          (data) => {
-            console.log('success');
+        let params = {
+          card,
+          id: card.id
+        };
+        Api.editeStandardCards(params)
+          .then(data => {
             this.isEditing = null;
             this.errors = [];
-          },
-          (error) => {
+          }).catch(error => {
             this.errors = error.response.data.errors;
-          }
-        );
+          });
       },
       addCardGroup: function (data) {
         this.cardGroup.push(data);
@@ -123,15 +125,13 @@
         this.errors = error;
       },
       destroyCard: function(card) {
-        Api.delete('standard_cards/' + card.id,
-          (data) => {
+        Api.deleteStandardCard(card.id)
+          .then( (data) => {
             let idx = this.cards.indexOf(card);
             this.cards.splice(idx, 1);
-          },
-          (error) => {
+          }).catch( (error) => {
             this.errors = [error.response.data.message];
-          }
-        );
+          });
       },
     }        
   };

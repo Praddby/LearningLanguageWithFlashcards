@@ -69,17 +69,13 @@
       }
     },
     created() {
-      Api.get('/standard_cards', this.setData, this.setError);
-    },
-    methods: {
-      setData(data){
+      Api.getStandardCards().then(data => {
         this.cardGroup = data;
         this.cards = data[0].standard_cards;
         this.slug = data[0].name_category;
-      },
-      setError(errors) {
-        this.errors =  error.response.data.errors;
-      },
+      });
+    },
+    methods: {
       setCard(card) {
           this.cards = card.standard_cards;
           this.slug = card.name_category;

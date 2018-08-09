@@ -60,7 +60,8 @@
       }
     },
     created() {
-      Api.get('/user_cards', this.setData);
+      Api.getUserCards()
+        .then(data => this.cardGroup = data);
     },
     watch: {
       selectCard: function () {
@@ -68,28 +69,18 @@
       }
     },
     methods: {
-      setData(data){
-        this.cardGroup = data;
-      },
       getCards(card){
         this.cards = card.user_cards;
       },
       editer() {
-        Api.put('/user_cards/' + this.selectCard.id,
-          { cards: this.cards, name_category: this.selectCard.name_category },
-          (data) => {
-            this.$emit('addCardGroup', 'Редактирование выполнено успешно');
-          },
-          (error) => {
-            let errors;
-            if ( error.response.status == 500 ) {
-              errors = ['Произошла ошибка, повторите попытку чуть позже.'];
-            } else {
-              errors = error.response.data.errors;
-            }
-            this.$emit('addCardError', errors);
-          }
-        );
+        let params = {
+          id: this.selectCard.id,
+          cards: this.cards,
+          name_category: this.selectCard.name_category,
+          t: this
+        };
+
+        Api.editeUserCards(params);
       },
       addInput() {
         this.cards.push({name_original: '', name_translation: ''});

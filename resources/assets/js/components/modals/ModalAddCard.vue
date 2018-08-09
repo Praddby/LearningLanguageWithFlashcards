@@ -58,23 +58,16 @@
     },
     methods: {
       add() {
-        Api.post(this.url, { cards: this.cards, name_category: this.name_category },
-          (data) => {
-            if ( this.url == "/standard_cards" )
-              this.$emit('addCardGroup', data);
-            else
-              this.$emit('addCardGroup', 'Добавлено успешно!');
-          },
-          (error) => {
-            let errors;
-            if ( error.response.status == 500 ) {
-              errors = ['Произошла ошибка, повторите попытку чуть позже.'];
-            } else {
-              errors = error.response.data.errors;
-            }
-            this.$emit('addCardError', errors);
-          }
-        );
+        let params = {
+          cards: this.cards,
+          name_category: this.name_category,
+          t: this
+        };
+
+        if ( this.url == "/standard_cards" )
+          Api.addStandardCards(params);
+        else
+          Api.addUserCards(params);
       },
       addInput() {
         this.cards.push({name_original: '', name_translation: ''});
