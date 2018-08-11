@@ -43,7 +43,8 @@
 
 <script>
 
-  import Api from '../ApiFunctions.js';
+  import ApiStandardCard from '../../api/standard-cards.js';
+  import ApiUserCard from '../../api/user-cards.js';
 
   export default {
     props:['url'],
@@ -65,9 +66,9 @@
         };
 
         if ( this.url == "/standard_cards" )
-          Api.addStandardCards(params);
+          ApiStandardCard.add(params);
         else
-          Api.addUserCards(params);
+          ApiUserCard.add(params);
       },
       addInput() {
         this.cards.push({name_original: '', name_translation: ''});

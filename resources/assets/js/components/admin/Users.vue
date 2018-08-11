@@ -103,7 +103,8 @@
 <script>
 
   import Bus from '../Bus.js';
-  import Api from '../ApiFunctions.js';
+  import ApiUser from '../../api/users.js';
+  import ApiPagination from '../../api/pagination.js';
 
   export default {
     data(){
@@ -120,7 +121,7 @@
       }
     },
     created() {
-      Api.getUsers().then(data => {
+      ApiUser.get().then(data => {
         this.pagination = data.data;
         this.users = data.data.data;
         this.roles = data.role;
@@ -132,7 +133,7 @@
           let params = {
             path: this.pagination
           };
-          Api.nextPageUrl(params).then(data => {
+          ApiPagination.next(params).then(data => {
             this.pagination = data.data;
             this.users = data.data.data;
           });
@@ -143,7 +144,7 @@
           let params = {
             path: this.pagination
           };
-          Api.prevPageUrl(params).then(data => {
+          ApiPagination.prev(params).then(data => {
             this.pagination = data.data;
             this.users = data.data.data;
           });
@@ -152,17 +153,17 @@
       PageUrl(pageNo) {
         if (this.pagination.current_page != pageNo) {
           let params = {
-            path: this.pagination.path,
+            path: this.pagination,
             pageNo
           };
-          Api.PageUrl(params).then(data => {
+          ApiPagination.page(params).then(data => {
             this.pagination = data.data;
             this.users = data.data.data;
           });
         }
       },
       showUser(id){
-        Api.showUser(id)
+        ApiUser.show(id)
           .then( (data) => {
             this.user_role = data;
             this.isUser = true;
@@ -180,7 +181,7 @@
           this.showEdite = id;
       },
       destroyUserRole(user){
-        Api.deleteUserRole(user.id)
+        ApiUser.deleteRole(user.id)
           .then( (data) => {
             user.role = null;
           }).catch( (error) => {
@@ -193,7 +194,7 @@
           userId: user.id
         };
 
-        Api.changeRole(params)
+        ApiUser.changeRole(params)
           .then( (data) => {
             user.role = this.selectedRole;
             this.showEdite = false;

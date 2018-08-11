@@ -52,7 +52,8 @@
 
 <script>
 
-  import Api from '../ApiFunctions.js';
+  import ApiRole from '../../api/roles.js';
+  import ApiPagination from '../../api/pagination.js';
 
   export default {
     data(){
@@ -65,7 +66,7 @@
       }
     },
     created() {
-      Api.getRole().then(data => {
+      ApiRole.get().then(data => {
         this.pagination = data;
         this.roles = data.data;
       });
@@ -76,7 +77,7 @@
           let params = {
             path: this.pagination
           };
-          Api.nextPageUrl(params).then(data => {
+          ApiPagination.next(params).then(data => {
             this.pagination = data;
             this.roles = data.data;
           });
@@ -87,7 +88,7 @@
           let params = {
             path: this.pagination
           };
-          Api.prevPageUrl(params).then(data => {
+          ApiPagination.prev(params).then(data => {
             this.pagination = data;
             this.roles = data.data;
           });
@@ -96,10 +97,10 @@
       PageUrl(pageNo) {
         if (this.pagination.current_page != pageNo) {
           let params = {
-            path: this.pagination.path,
+            path: this.pagination,
             pageNo
           };
-          Api.PageUrl(params).then(data => {
+          ApiPagination.page(params).then(data => {
             this.pagination = data;
             this.roles = data.data;
           });
@@ -110,7 +111,7 @@
           role: this.role
         };
 
-        Api.addRole(params)
+        ApiRole.add(params)
           .then( (data) => {
             this.roles.push(data);
             this.role = '';
@@ -119,7 +120,7 @@
           });
       },
       destroyRole: function(role) {
-        Api.deleteRole(role.id)
+        ApiRole.delete(role.id)
           .then( (data) => {
             let idx = this.roles.indexOf(role);
             this.roles.splice(idx, 1);

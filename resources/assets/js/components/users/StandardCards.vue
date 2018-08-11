@@ -55,7 +55,7 @@
 
 <script>
 
-  import Api from '../ApiFunctions.js';
+  import ApiStandardCard from '../../api/standard-cards.js';
 
   export default {
 
@@ -69,7 +69,7 @@
       }
     },
     created() {
-      Api.getStandardCards().then(data => {
+      ApiStandardCard.get().then(data => {
         this.cardGroup = data;
         this.cards = data[0].standard_cards;
         this.slug = data[0].name_category;

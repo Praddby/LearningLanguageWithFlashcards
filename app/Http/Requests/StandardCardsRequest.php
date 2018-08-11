@@ -25,8 +25,8 @@ class StandardCardsRequest extends FormRequest
     {
         return [
             'name_category'            => 'filled|string',
-            'cards.*.name_original'    => 'nullable|string',
-            'cards.*.name_translation' => 'nullable|string',
+            'cards.*.name_original'    => 'filled|string',
+            'cards.*.name_translation' => 'filled|string',
             'card.name_original'       => 'filled|string',
             'card.name_translation'    => 'filled|string'
         ];

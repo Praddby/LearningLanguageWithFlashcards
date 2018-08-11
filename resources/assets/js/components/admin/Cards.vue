@@ -4,7 +4,7 @@
       <a href="#" class="btn btn-primary mb-4 ml-4" data-toggle="modal" data-target="#addCardModal" data-backdrop="static">Добавить картоку</a>
     </div>
     <div class="alert alert-danger" role="alert" v-if="errors" v-for="error in errors">
-      {{ error }}
+      {{ error.toString() }}
     </div>
     <modal-delete :modal="modal" @delete="destroyCard"></modal-delete>
     <modal-add-cards :url="'/standard_cards'"
@@ -65,7 +65,7 @@
 
 <script>
   
-  import Api from '../ApiFunctions.js';
+  import ApiStandardCard from '../../api/standard-cards.js';
 
   export default {
 
@@ -82,7 +82,7 @@
       }
     },
     created() {
-      Api.getStandardCards()
+      ApiStandardCard.get()
         .then(data => {
           this.cardGroup = data;
           this.cards = data[0].standard_cards;
@@ -109,7 +109,7 @@
           card,
           id: card.id
         };
-        Api.editeStandardCards(params)
+        ApiStandardCard.edite(params)
           .then(data => {
             this.isEditing = null;
             this.errors = [];
@@ -125,7 +125,7 @@
         this.errors = error;
       },
       destroyCard: function(card) {
-        Api.deleteStandardCard(card.id)
+        ApiStandardCard.delete(card.id)
           .then( (data) => {
             let idx = this.cards.indexOf(card);
             this.cards.splice(idx, 1);

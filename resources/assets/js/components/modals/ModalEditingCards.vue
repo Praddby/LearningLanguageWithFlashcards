@@ -48,7 +48,7 @@
 
 <script>
 
-  import Api from '../ApiFunctions.js';
+  import ApiUserCard from '../../api/user-cards.js';
 
   export default {
 
@@ -60,7 +60,7 @@
       }
     },
     created() {
-      Api.getUserCards()
+      ApiUserCard.get()
         .then(data => this.cardGroup = data);
     },
     watch: {
@@ -80,7 +80,7 @@
           t: this
         };
 
-        Api.editeUserCards(params);
+        ApiUserCard.edite(params);
       },
       addInput() {
         this.cards.push({name_original: '', name_translation: ''});

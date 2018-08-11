@@ -55,7 +55,7 @@
 
 <script>
 
-  import Api from '../ApiFunctions.js';
+  import ApiUserCard from '../../api/user-cards.js';
 
   export default {
 
@@ -69,7 +69,7 @@
       }
     },
     created() {
-      Api.getUserCards()
+      ApiUserCard.get()
         .then(data => {
           this.cardGroup = data;
           this.cards = data[0].user_cards;
