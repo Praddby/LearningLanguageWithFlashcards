@@ -4,15 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserCards extends Model
+class Cards extends Model
 {
     protected $fillable = [
         'name_original', 'name_translation'
     ];
 
-    public function cardGroup()
+    public function category()
     {
-        return $this->belongsTo(CardGroup::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function user()

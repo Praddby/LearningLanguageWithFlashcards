@@ -7,11 +7,11 @@
           <div class="card-body">
             <ul class="list-group list-group-flush">
               <a href="#" class="list-group-item list-group-item-action"
-              v-for="(card, index) in cardGroup"
-              :class="{ active: (slug == card.name_category) }"
-              :key="card.id"
-              @click.prevent="setCard(card)">
-                {{ card.name_category }}
+              v-for="(category, index) in categories"
+              :class="{ active: (slug == category.name_category) }"
+              :key="category.id"
+              @click.prevent="setCard(category)">
+                {{ category.name_category }}
               </a>
             </ul>
           </div>
@@ -61,7 +61,7 @@
 
     data(){
       return{
-        cardGroup: {},
+        categories: {},
         cards: [],
         slug: '',
         userIndex: 0,
@@ -70,14 +70,14 @@
     },
     created() {
       ApiStandardCard.get().then(data => {
-        this.cardGroup = data;
-        this.cards = data[0].standard_cards;
+        this.categories = data;
+        this.cards = data[0].cards;
         this.slug = data[0].name_category;
       });
     },
     methods: {
       setCard(card) {
-          this.cards = card.standard_cards;
+          this.cards = card.cards;
           this.slug = card.name_category;
           this.userIndex = 0;
           this.font = false;

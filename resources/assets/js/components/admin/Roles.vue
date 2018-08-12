@@ -61,7 +61,7 @@
         pagination: {},
         roles: {},
         role: '',
-        errors: [],
+        errors: null,
         modal: {}
       }
     },
@@ -115,6 +115,7 @@
           .then( (data) => {
             this.roles.push(data);
             this.role = '';
+            this.errors = null;
           }).catch( (error) => {
             this.errors =  error.response.data.errors.role;
           });
@@ -122,6 +123,7 @@
       destroyRole: function(role) {
         ApiRole.delete(role.id)
           .then( (data) => {
+            this.errors = null;
             let idx = this.roles.indexOf(role);
             this.roles.splice(idx, 1);
           }).catch( (error) => {

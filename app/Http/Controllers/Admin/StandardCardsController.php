@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\CardGroup;
-use App\StandardCards;
-use App\Http\Requests\StandardCardsRequest;
+use App\Category;
+use App\Cards;
+use App\Http\Requests\CardsRequest;
 
 class StandardCardsController extends Controller
 {
@@ -18,49 +18,49 @@ class StandardCardsController extends Controller
      */
     public function index()
     {
-        return CardGroup::with('standardCards')->standardCards()->get();
+        return Category::with('cards')->standardCards()->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\StandardCardsRequest  $request
+     * @param  \Illuminate\Http\CardsRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StandardCardsRequest $request)
+    public function store(CardsRequest $request)
     {
-        $cardGroup = DB::transaction(function () use ($request) {
-            $cardGroup = CardGroup::create($request->all());
-            $cardGroup->setStandard()->save();
+        $category = DB::transaction(function () use ($request) {
+            $category = Category::create($request->all());
+            $category->setStandard()->save();
             foreach ($request['cards'] as $card) {
                 if ( $card['name_original'] == '' || $card['name_translation'] == '') continue;
-                $standardCards = new StandardCards([
+                $cards = new Cards([
                     'name_original'    => $card['name_original'],
                     'name_translation' => $card['name_translation'],
                 ]);
-                $standardCards->cardGroup()->associate($cardGroup)->save();
+                $cards->category()->associate($category)->save();
 
-                if ( !isset($standardCards) ) {
+                if ( !isset($cards) ) {
                     throw new \Exception("Вы забыли добавить слова в карточку");
                 }
             }
 
-            return $cardGroup;
+            return $category;
         });
 
-        return $cardGroup->fresh('standardCards');
+        return $category->fresh('cards');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\StandardCardsRequest  $request
+     * @param  \Illuminate\Http\CardsRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StandardCardsRequest $request, $id)
+    public function update(CardsRequest $request, $id)
     {
-        StandardCards::find($id)->update([
+        Cards::find($id)->update([
             'name_original'    => $request->card['name_original'],
             'name_translation' => $request->card['name_translation']
         ]);
@@ -74,6 +74,6 @@ class StandardCardsController extends Controller
      */
     public function destroy($id)
     {
-        StandardCards::destroy( $id );
+        Cards::destroy( $id );
     }
 }

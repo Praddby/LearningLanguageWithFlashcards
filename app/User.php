@@ -36,14 +36,14 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function cardGroups()
+    public function categories()
     {
-        return $this->hasMany(CardGroup::class);
+        return $this->hasMany(Category::class);
     }
 
-    public function userCards()
+    public function cards()
     {
-        return $this->hasMany(UserCards::class);
+        return $this->hasMany(Cards::class);
     }
 
 

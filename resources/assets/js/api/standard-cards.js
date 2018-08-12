@@ -21,7 +21,7 @@ export default {
 
     return axios.post('/standard_cards', data)
       .then( (response) => {
-        t.$emit('addCardGroup', response.data);
+        t.$emit('emitSuccess', response.data);
       })
       .catch( (error) => {
         let errors;
@@ -32,7 +32,7 @@ export default {
         } else {
           errors = error.response.statusText;
         }
-        t.$emit('addCardError', errors);
+        t.$emit('emitError', errors);
       });
   },
 

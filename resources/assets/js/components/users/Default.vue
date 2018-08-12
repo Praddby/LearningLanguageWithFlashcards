@@ -1,15 +1,15 @@
 <template>
   <div>
     <modal-add-cards :url="'/user_cards'"
-                     @addCardError="addCardErrors"
-                     @addCardGroup="addCardSuccess">
+                     @emitError="emitError"
+                     @emitSuccess="emitSuccess">
     </modal-add-cards>
-    <modal-editing-card @addCardError="addCardErrors"
-                        @addCardGroup="addCardSuccess">
+    <modal-editing-card @emitError="emitError"
+                        @emitSuccess="emitSuccess">
     </modal-editing-card>
-    <div class="alert alert-danger" role="alert" v-if="errors" v-for="error in errors">
-      {{ error.toString() }}
-    </div>
+    <ul class="list-group list-group-flush my-4" v-if="errors">
+      <li class="list-group-item list-group-item-danger" v-for="error in errors">{{ error.toString() }}</li>
+    </ul>
     <div class="alert alert-success" role="alert" v-if="success">
       <span>{{ success }}</span>
     </div>
@@ -57,11 +57,11 @@
       }
     },
     methods: {
-      addCardSuccess: function (success){
+      emitSuccess: function (success){
         this.success = success;
         this.errors = null;
       },
-      addCardErrors: function(errors) {
+      emitError: function(errors) {
         this.errors = errors;
       },
     },

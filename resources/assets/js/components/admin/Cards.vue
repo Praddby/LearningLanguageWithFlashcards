@@ -3,13 +3,13 @@
     <div class="row">
       <a href="#" class="btn btn-primary mb-4 ml-4" data-toggle="modal" data-target="#addCardModal" data-backdrop="static">Добавить картоку</a>
     </div>
-    <div class="alert alert-danger" role="alert" v-if="errors" v-for="error in errors">
-      {{ error.toString() }}
-    </div>
+    <ul class="list-group list-group-flush mb-4" v-if="errors">
+      <li class="list-group-item list-group-item-danger" v-for="error in errors">{{ error.toString() }}</li>
+    </ul>
     <modal-delete :modal="modal" @delete="destroyCard"></modal-delete>
     <modal-add-cards :url="'/standard_cards'"
-                     @addCardError="addCardError"
-                     @addCardGroup="addCardGroup">
+                     @emitError="emitError"
+                     @emitSuccess="emitSuccess">
     </modal-add-cards>
     <div class="row">
       <div class="col-md-4">
@@ -18,11 +18,11 @@
           <div class="card-body">
             <ul class="list-group list-group-flush">
               <a href="#" class="list-group-item list-group-item-action"
-              v-for="(card, index) in cardGroup"
-              :class="{ active: (slug == card.name_category) }"
-              :key="card.id"
-              @click.prevent="setCard(card)">
-                {{ card.name_category }}
+              v-for="(category, index) in categories"
+              :class="{ active: (slug == category.name_category) }"
+              :key="category.id"
+              @click.prevent="setCard(category)">
+                {{ category.name_category }}
               </a>
             </ul>
           </div>
@@ -71,21 +71,21 @@
 
     data(){
       return{
-        cardGroup: {},
+        categories: {},
         cards: [],
         slug: '',
         isEditing: null,
         name_original: '',
         name_translation: '',
-        errors: [],
+        errors: null,
         modal: {}
       }
     },
     created() {
       ApiStandardCard.get()
         .then(data => {
-          this.cardGroup = data;
-          this.cards = data[0].standard_cards;
+          this.categories = data;
+          this.cards = data[0].cards;
           this.slug = data[0].name_category;
         })
         .catch(error => {
@@ -94,7 +94,7 @@
     },
     methods: {
       setCard(card) {
-          this.cards = card.standard_cards;
+          this.cards = card.cards;
           this.slug = card.name_category;
           this.isEditing = null;
       },
@@ -112,21 +112,22 @@
         ApiStandardCard.edite(params)
           .then(data => {
             this.isEditing = null;
-            this.errors = [];
+            this.errors = null;
           }).catch(error => {
             this.errors = error.response.data.errors;
           });
       },
-      addCardGroup: function (data) {
-        this.cardGroup.push(data);
-        this.errors = [];
+      emitSuccess: function (data) {
+        this.categories.push(data);
+        this.errors = null;
       },
-      addCardError: function (error) {
+      emitError: function (error) {
         this.errors = error;
       },
       destroyCard: function(card) {
         ApiStandardCard.delete(card.id)
           .then( (data) => {
+            this.errors = null;
             let idx = this.cards.indexOf(card);
             this.cards.splice(idx, 1);
           }).catch( (error) => {

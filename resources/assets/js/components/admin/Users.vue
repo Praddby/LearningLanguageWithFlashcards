@@ -21,7 +21,7 @@
             <form>
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <button class="btn btn-outline-secondary" type="submit" @click="changeRole(user)">Button</button>
+                  <button class="btn btn-outline-secondary" type="submit" @click.prevent="changeRole(user)">Ок</button>
                 </div>
                 <select class="custom-select" id="inputGroupSelect03" v-model="selectedRole">
                   <option :value="role" v-for="(role, index) in roles" :key="role.id">{{ role.name }}</option>
@@ -33,12 +33,12 @@
             <label class="badge badge-success" v-if="user.role">{{ user.role.name }}</label>
           </td>
           <td>
-            <a class="btn btn-info" href="#" @click="showUser(user.id)">Показать</a>
-            <a class="btn btn-primary" href="#" @click="showEditeRoleUser(user.id)">Изменить</a>
+            <a class="btn btn-info" href="#" @click.prevent="showUser(user.id)">Показать</a>
+            <a class="btn btn-primary" href="#" @click.prevent="showEditeRoleUser(user.id)">Изменить</a>
             <a href="#" type="button"
               data-toggle="modal"
               data-target="#deleteModal"
-              @click="modal = user" 
+              @click.prevent="modal = user" 
               :class="[(user.role) ? 'btn btn-danger' : 'disabled btn btn-secondary']"
               >Удалить</a>
           </td>
@@ -93,7 +93,7 @@
         </div>
       </div>
       <div class="pull-right">
-        <a class="btn btn-primary" href="#" @click="showTableUsers"> Назад </a>
+        <a class="btn btn-primary" href="#" @click.prevent="showTableUsers"> Назад </a>
       </div>
     </div>
 
@@ -115,8 +115,8 @@
         isUser: false,
         showEdite: false,
         roles: {},
-        selectedRole: '',
-        errors: [],
+        selectedRole: null,
+        errors: null,
         modal: {}
       }
     },
@@ -165,6 +165,7 @@
       showUser(id){
         ApiUser.show(id)
           .then( (data) => {
+            this.errors = null;
             this.user_role = data;
             this.isUser = true;
           }).catch( (error) => {
@@ -183,6 +184,7 @@
       destroyUserRole(user){
         ApiUser.deleteRole(user.id)
           .then( (data) => {
+            this.errors = null;
             user.role = null;
           }).catch( (error) => {
             this.errors = [error.response.data.message];
@@ -196,8 +198,10 @@
 
         ApiUser.changeRole(params)
           .then( (data) => {
+            this.errors = null;
             user.role = this.selectedRole;
             this.showEdite = false;
+            this.selectedRole = null;
           }).catch( (error) => {
             this.errors =  error.response.data.errors.roleId;
           });

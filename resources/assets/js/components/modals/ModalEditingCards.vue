@@ -18,7 +18,9 @@
               <div class="col">
                 <select class="custom-select" id="inputGroupSelect03"
                         v-model="selectCard" placeholder="Выберите карточку для редактирования">>
-                  <option :value="card" v-for="(card, index) in cardGroup" :key="card.id">{{ card.name_category }}</option>
+                  <option :value="category" v-for="(category, index) in categories" :key="category.id">
+                    {{ category.name_category }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -54,14 +56,14 @@
 
     data(){
       return{
-        cardGroup: {},
+        categories: {},
         cards: {},
         selectCard: '',
       }
     },
     created() {
       ApiUserCard.get()
-        .then(data => this.cardGroup = data);
+        .then(data => this.categories = data);
     },
     watch: {
       selectCard: function () {
@@ -70,7 +72,7 @@
     },
     methods: {
       getCards(card){
-        this.cards = card.user_cards;
+        this.cards = card.cards;
       },
       editer() {
         let params = {

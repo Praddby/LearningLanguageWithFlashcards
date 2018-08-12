@@ -5,10 +5,10 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserCardsRequest;
+use App\Http\Requests\CardsRequest;
 use Illuminate\Support\Facades\DB;
-use App\CardGroup;
-use App\UserCards;
+use App\Category;
+use App\Cards;
 use App\User;
 
 class UserCardsController extends Controller
@@ -20,34 +20,34 @@ class UserCardsController extends Controller
      */
     public function index()
     {
-        return Auth::user()->cardGroups()->with('userCards')->get();
+        return Auth::user()->categories()->with('cards')->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\UserCardsRequest  $request
+     * @param  \Illuminate\Http\CardsRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserCardsRequest $request)
+    public function store(CardsRequest $request)
     {
         DB::transaction(function () use ($request) {
-            $cardGroup = CardGroup::create($request->all());
-            $cardGroup->user()->associate(Auth::user())->save();
+            $category = Category::create($request->all());
+            $category->user()->associate(Auth::user())->save();
             
             foreach ($request['cards'] as $card) {
                 if ( $card['name_original'] == '' || $card['name_translation'] == '') continue;
 
-                $userCards = new UserCards([
+                $cards = new Cards([
                     'name_original'    => $card['name_original'],
                     'name_translation' => $card['name_translation'],
                 ]);
 
-                $userCards->cardGroup()->associate($cardGroup)
+                $cards->category()->associate($category)
                           ->user()->associate(Auth::user())->save();
             }
 
-            if ( !isset($userCards) ) {
+            if ( !isset($cards) ) {
                 throw new \Exception("Вы забыли добавить слова в карточку");
             }
         });
@@ -57,27 +57,27 @@ class UserCardsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\UserCardsRequest  $request
+     * @param  \Illuminate\Http\CardsRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserCardsRequest $request, $id)
+    public function update(CardsRequest $request, $id)
     {
         DB::transaction(function () use ($request, $id) {
-            $cardGroup = CardGroup::find($id);
+            $category = Category::find($id);
             foreach ($request['cards'] as $card) {
                 if ( $card['name_original'] == '' || $card['name_translation'] == '' ) continue;
                 if ( isset($card['id']) ) {
-                    UserCards::find($card['id'])->update([
+                    Cards::find($card['id'])->update([
                         'name_original'    => $card['name_original'],
                         'name_translation' => $card['name_translation']
                     ]);
                 } else {
-                    $userCards = new UserCards([
+                    $cards = new Cards([
                         'name_original'    => $card['name_original'],
                         'name_translation' => $card['name_translation'],
                     ]);
-                    $userCards->cardGroup()->associate($cardGroup)
+                    $cards->category()->associate($category)
                               ->user()->associate(Auth::user())->save();
                 }
             }
@@ -92,6 +92,6 @@ class UserCardsController extends Controller
      */
     public function destroy($id)
     {
-        UserCards::destroy($id);
+        Cards::destroy($id);
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCardGroupsTable extends Migration
+class CreateCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCardGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('card_groups', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name_category');
             $table->boolean('is_standard')->default(false);
@@ -31,6 +31,6 @@ class CreateCardGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('card_groups');
+        Schema::dropIfExists('categories');
     }
 }

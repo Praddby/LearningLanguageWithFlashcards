@@ -4,20 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CardGroup extends Model
+class Category extends Model
 {
     protected $fillable = [
         'name_category'
     ];
 
-    public function standardCards()
+    public function cards()
     {
-        return $this->hasMany(StandardCards::class);
-    }
-
-    public function userCards()
-    {
-        return $this->hasMany(UserCards::class);
+        return $this->hasMany(Cards::class);
     }
 
     public function user()
