@@ -19,6 +19,7 @@ Vue.component('user-nav', require('./components/users/Nav.vue').default);
 Vue.component('user-def', require('./components/users/Default.vue').default);
 Vue.component('user-cards', require('./components/users/UserCards.vue').default);
 Vue.component('standard-cards', require('./components/users/StandardCards.vue').default);
+Vue.component('lvl-cards', require('./components/users/LvlCards.vue').default);
 
 // admin
 Vue.component('admin-nav', require('./components/admin/Nav.vue').default);
@@ -48,5 +49,8 @@ const app = new Vue({
     usercomponent: function () {
       return Bus.usercomponent;
     },
+    lvl: function() {
+      return Bus.lvl;
+    }
   },
 });

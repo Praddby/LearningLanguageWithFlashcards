@@ -17,7 +17,7 @@ class CreateCardsTable extends Migration
             $table->increments('id');
             $table->string('name_original');
             $table->string('name_translation');
-            $table->boolean('level')->default(0);
+            $table->tinyInteger('level')->default(0);
             $table->unsignedInteger('user_id')->nullable();
             $table->unsignedInteger('category_id');
             $table->timestamps();

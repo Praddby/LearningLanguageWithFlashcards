@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="col-md-9">
-        <component :is="usercomponent"></component>
+        <component :is="usercomponent" :lvl="lvl"></component>
       </div>
     </div>
   </div>
