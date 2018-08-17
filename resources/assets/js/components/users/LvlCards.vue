@@ -1,40 +1,40 @@
 <template>
   <div>
-    <div class="row">
-      
+    <div class="row text-center font-italic h4 mb-5">
+      {{ message }}
     </div>
-    <div class="row">
-      <div class="col-9 offset-sm-1">
-        <div  class="myCard d-flex"
-              style="width: 28rem; height: 22rem;"
-              v-for="(card, index) in cards"
-              :key="card.id"
-              v-if="(index == userIndex)">
-          <div class="card-body front"
-               @click="font = !font"
-               :class="{ frontHover: (font == true) }">
-            <p class="card-text">{{ card.name_original }}</p>
-          </div>
-          <div class="card-body back"
-               @click="font = !font"
-               :class="{ backHover: (font == true) }">
-            <p class="card-text">{{ card.name_translation }}</p>
-          </div>
-          <div class="footer align-self-end d-flex justify-content-around">
-            <button type="button"
-                    class="btn"
-                    v-if="lvl > 1"
-                    :class="[ disabled ? 'btn-secondary disabled' : 'btn-success' ]"
-                    @click="lvlOne(card)">Вернуть на ур. 1 </button>
-            <button type="button"
-                    class="btn"
-                    :class="[ disabled ? 'btn-secondary disabled' : 'btn-success' ]"
-                    @click="nextCard()">Оставить на ур. {{ lvl }} </button>
-            <button type="button"
-                    class="btn"
-                    :class="[ disabled ? 'btn-secondary disabled' : 'btn-success' ]"
-                    @click="lvlUp(card)">Перенести на ур. {{ lvl + 1 }} </button>
-          </div>
+    <div class="row d-flex justify-content-center">
+      <div  class="myCard d-flex"
+            style="width: 24rem; height: 22rem;"
+            v-for="(card, index) in cards"
+            :key="card.id"
+            v-if="(index == userIndex)">
+        <div class="card-body front"
+             @click="font = !font"
+             :class="{ frontHover: (font == true) }">
+          <p class="card-text">{{ card.name_original }}</p>
+        </div>
+        <div class="card-body back"
+             @click="font = !font"
+             :class="{ backHover: (font == true) }">
+          <p class="card-text">{{ card.name_translation }}</p>
+        </div>
+        <div class="footer align-self-end d-flex justify-content-around">
+          <button type="button"
+                  class="btn"
+                  v-if="lvl > 1"
+                  :class="[ disabled ? 'btn-secondary disabled' : 'btn-success' ]"
+                  @click="lvlOne(card)">Вернуть на ур. 1 </button>
+          <button type="button"
+                  class="btn"
+                  v-if="!(lvl == 7)"
+                  :class="[ disabled ? 'btn-secondary disabled' : 'btn-success' ]"
+                  @click="lvlUp(card)">Перенести на ур. {{ lvl + 1 }} </button>
+          <button type="button"
+                  class="btn"
+                  v-if="lvl == 7 || lvl == 1"
+                  :class="[ (index == (cards.length - 1) ) ? 'btn-secondary disabled' : 'btn-success' ]"
+                  @click="next()"> > </button>
         </div>
       </div>
     </div>
@@ -44,6 +44,7 @@
 <script>
 
   import LvlCard from '../../api/lvl-card.js';
+  import Msg from '../../inc/message-for-lvl.js'
 
   export default {
 
@@ -54,7 +55,8 @@
         cards: [],
         userIndex: 0,
         font: false,
-        disabled: false
+        disabled: false,
+        message: null
       }
     },
     created() {
@@ -67,6 +69,7 @@
     },
     methods: {
       getCards(){
+        this.message = Msg.get(this.lvl);
         LvlCard.getCardsLvl(this.lvl)
           .then(data => {
             this.cards = data;
@@ -115,12 +118,10 @@
           });
         }
       },
-      nextCard(){
+      next(){
         if ( this.cards.length - 1 > this.userIndex ) {
           this.userIndex++;
           this.font = false;
-        } else if (this.cards.length - 1 == this.userIndex) {
-          this.disabled = true;
         }
       },
     }        
