@@ -34,5 +34,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('home', 'UserController@index')->name('home');
         Route::apiResource('user_cards', 'UserCardsController')->only(['index', 'store', 'update', 'destroy']);
         Route::apiResource('lvl_card', 'LvlCardController')->only(['show', 'update']);
+        Route::apiResource('lvl_notification', 'NotificationController')->only(['store']);
     });
 });

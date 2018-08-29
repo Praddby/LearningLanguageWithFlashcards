@@ -33,7 +33,7 @@
           <button type="button"
                   class="btn"
                   v-if="lvl == 7 || lvl == 1"
-                  :class="[ (index == (cards.length - 1) ) ? 'btn-secondary disabled' : 'btn-success' ]"
+                  :class="[ disabled ? 'btn-secondary disabled' : 'btn-success' ]"
                   @click="next()"> > </button>
         </div>
       </div>
@@ -44,7 +44,8 @@
 <script>
 
   import LvlCard from '../../api/lvl-card.js';
-  import Msg from '../../inc/message-for-lvl.js'
+  import Msg from '../../inc/message-for-lvl.js';
+  import Notification from '../../api/lvl-notification.js';
 
   export default {
 
@@ -84,13 +85,14 @@
           id: card.id
         };
         let idx = this.cards.indexOf(card);
-        if ( (this.cards.length - 1 > this.userIndex ) && !this.disabled) {
+        if ( (this.cards.length - 1 > this.userIndex ) && !this.disabled ) {
           LvlCard.setCardLvl(params)
           .then(data => {
             this.cards.splice(idx, 1);
             this.font = false;
           });
-        } else if ( (this.cards.length - 1 == this.userIndex) && !this.disabled) {
+        } else if ( (this.cards.length - 1 == this.userIndex) && !this.disabled ) {
+          Notification.setLastRepeat(this.lvl);
           LvlCard.setCardLvl(params).then(data => {
             this.cards.splice(idx, 1);
             this.userIndex--;
@@ -104,13 +106,14 @@
           id: card.id
         };
         let idx = this.cards.indexOf(card);
-        if ( (this.cards.length - 1 > this.userIndex) && !this.disabled) {
+        if ( (this.cards.length - 1 > this.userIndex) && !this.disabled ) {
           LvlCard.setCardLvl(params)
           .then(data => {
             this.cards.splice(idx, 1);
             this.font = false;
           });
-        } else if ( (this.cards.length - 1 == this.userIndex) && !this.disabled) {
+        } else if ( (this.cards.length - 1 == this.userIndex) && !this.disabled ) {
+          Notification.setLastRepeat(this.lvl);
           LvlCard.setCardLvl(params).then(data => {
             this.cards.splice(idx, 1);
             this.userIndex--;
@@ -122,6 +125,9 @@
         if ( this.cards.length - 1 > this.userIndex ) {
           this.userIndex++;
           this.font = false;
+        } else if ( (this.cards.length - 1 == this.userIndex) && !this.disabled ) {
+          Notification.setLastRepeat(this.lvl);
+          this.disabled = true;
         }
       },
     }        

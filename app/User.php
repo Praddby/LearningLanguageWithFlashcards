@@ -46,6 +46,11 @@ class User extends Authenticatable
         return $this->hasMany(Cards::class);
     }
 
+    public function notificatios()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
 
     public function isAdmin()
     {
