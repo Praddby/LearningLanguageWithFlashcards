@@ -4,16 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Cards extends Model
+class Notification extends Model
 {
     protected $fillable = [
-        'name_original', 'name_translation', 'level'
+        'level', 'last_repeat', 'user_id'
     ];
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
 
     public function user()
     {

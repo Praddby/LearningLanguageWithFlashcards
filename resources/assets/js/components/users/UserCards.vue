@@ -39,9 +39,9 @@
                     :class="{ disabled: (index == 0) }"
                     @click="prev()"> < </button>
             <button type="button"
-                    class="btn btn-success"
-                    :class="{ disabled: !(card.is_level_zero === 0) }"
-                    @click="addCardInLvlOne(card)">Добавить в ур. 1</button>
+                    class="btn"
+                    :class="[ !(card.level === 0) ? 'btn-secondary disabled' : 'btn-success' ]"
+                    @click="setLvlOne(card)">Добавить в ур. 1</button>
             <button type="button"
                     class="btn btn-dark"
                     :class="{ disabled: (index == (cards.length - 1) ) }"
@@ -56,6 +56,7 @@
 <script>
 
   import ApiUserCard from '../../api/user-cards.js';
+  import LvlCard from '../../api/lvl-card.js';
 
   export default {
 
@@ -83,8 +84,15 @@
           this.userIndex = 0;
           this.font = false;
       },
-      addCardInLvlOne(card){
-
+      setLvlOne(card){
+        let params = {
+          lvl: 1,
+          id: card.id
+        }
+        LvlCard.setCardLvl(params)
+          .then(data => {
+            card.level = 1;
+          });
       },
       next(){
         if ( this.cards.length - 1 > this.userIndex ) {
